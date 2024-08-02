@@ -7,9 +7,9 @@ Este projeto gera um Documento Auxiliar da Nota Fiscal Eletrônica (DANFE) em fo
 
 ### Arquivos Principais
 
-- `main.py`: Arquivo principal que carrega os dados do JSON e gera o PDF.
+- `danfe.py`: Arquivo principal que carrega os dados do JSON e gera o PDF.
 - `utils.py`: Contém funções utilitárias para formatação de dados.
-- `danfe_render_nfe.py`: Contém as funções responsáveis por renderizar a primeira página e os itens do DANFE.
+- `danfe_render_nfe.py`: Contém as funções responsáveis por renderizar as páginas e os itens do DANFE.
 - `payload.json`: Exemplo de arquivo JSON contendo os dados da Nota Fiscal.
 
 ## Funcionalidades
