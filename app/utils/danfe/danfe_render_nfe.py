@@ -4,7 +4,7 @@ import locale
 from reportlab.lib.units import mm
 from reportlab.graphics.barcode import code128
 
-from utils import (
+from app.utils.general_pdf_utils import (
     formatar_moeda,
     draw_wrapped_text,
     formatar_celular,
@@ -12,6 +12,7 @@ from utils import (
     get_emissao_details,
     formatar_cnpj_cpf
 )
+
 
 
 locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
