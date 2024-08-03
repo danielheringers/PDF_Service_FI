@@ -60,7 +60,7 @@ def formatar_chave_acesso(chave):
 
 def get_emissao_details(dados: Danfe) -> Optional[str]:
     for evento in dados.eventos:
-        if evento.type == "EMISSÃƒO":
+        if evento.type == "EMISSÃO":
             protocolo = evento.protocolo
             dh_evento = evento.dhEvento
             if protocolo and dh_evento:
