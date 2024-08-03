@@ -6,7 +6,13 @@ from reportlab.lib.units import mm
 from io import BytesIO
 from app.utils.danfe.danfe_render_nfe import render_first_page, render_items
 
-locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+try:
+    locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+except locale.Error:
+    try:
+        locale.setlocale(locale.LC_ALL, 'pt_BR.utf8')
+    except locale.Error:
+        locale.setlocale(locale.LC_ALL, 'C.UTF-8')
 
 class NumberedCanvas(canvas.Canvas):
     def __init__(self, *args, **kwargs):
