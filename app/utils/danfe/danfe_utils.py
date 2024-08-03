@@ -39,15 +39,15 @@ def create_pdf(data: Danfe) -> BytesIO:
     width, height = A4
     margin = 5 * mm
 
-    data_emissao = datetime.fromisoformat(data["identificacao"]["dataHoraEmissao"])
+    data_emissao = datetime.fromisoformat(data.identificacao.dataHoraEmissao)
     data_formatada = data_emissao.strftime("%d-%m-%Y")
-    serie_formatada = data["identificacao"]["serie"].zfill(3)
-    numero_nota = data["identificacao"]["numeroDocFiscal"].zfill(9)
+    serie_formatada = data.identificacao.serie.zfill(3)
+    numero_nota = data.identificacao.numeroDocFiscal.zfill(9)
     partes = [numero_nota[i:i+3] for i in range(0, len(numero_nota), 3)]
     numero_nota_formatado = '.'.join(partes)
 
     render_first_page(pdf_canvas, data, data_formatada, serie_formatada, numero_nota_formatado, width, height, margin)
-    render_items(pdf_canvas, data["det"], width, height, margin, data)
+    render_items(pdf_canvas, data.det, width, height, margin, data)
 
     pdf_canvas.showPage() 
     pdf_canvas.save()     

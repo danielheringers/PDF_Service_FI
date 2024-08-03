@@ -208,7 +208,7 @@ def render_first_page(canvas_draw, data: Danfe, data_formatada, serie_formatada,
     canvas_draw.drawString(margin + 89 * mm, 173 * mm, rntc)
     canvas_draw.drawString(margin + 124 * mm, 173 * mm, placa_veiculo)
     canvas_draw.drawString(margin + 154 * mm, 173 * mm, uf_veiculo)
-    canvas_draw.drawString(margin + 163 * mm, 173 * mm, cnpj_cpf_formatado_transp)
+    canvas_draw.drawString(margin + 163 * mm, 173 * mm, cnpj_cpf_transp)
     canvas_draw.drawString(margin, 166 * mm, endereco_completo)
     canvas_draw.drawString(margin + 89 * mm, 166 * mm, nome_municipio)
     canvas_draw.drawString(margin + 154 * mm, 166 * mm, uf_transporta)
