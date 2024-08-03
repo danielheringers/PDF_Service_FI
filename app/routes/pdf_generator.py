@@ -17,7 +17,3 @@ def create_danfe_pdf_endpoint(data: dict = Body(...)):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
-
-# f"attachment; filename={data['identificacao']['codigoNf']}.pdf"}
