@@ -17,8 +17,7 @@ from app.utils.general_pdf_utils import (
 
 locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
-def render_first_page(canvas_draw, data, data_formatada, serie_formatada, numero_nota_formatado, width, height, margin):
-    
+def render_first_page(canvas_draw, data: Danfe, data_formatada, serie_formatada, numero_nota_formatado, width, height, margin):
     # Formatações
     modFrete_descricao = {
         "0": "0 - Por conta do Emitente",
@@ -26,50 +25,49 @@ def render_first_page(canvas_draw, data, data_formatada, serie_formatada, numero
         "2": "2 - Por conta de terceiros",
         "9": "9 - Sem frete (v2.0)"
     }
-    x_position                  = margin + 165 * mm
-    y_position                  = 241 * mm
-    dt_emissao                  = datetime.fromisoformat(data["identificacao"]["dataHoraEmissao"])
-    dt_entrada_saida            = datetime.fromisoformat(data["identificacao"]["dataHoraSaidaOuEntrada"])
-    valor                       = float(data["dadosCobranca"])
-    valor_formatado_canhoto     = locale.currency(valor, grouping=True)
-    serie_formatada             = data["identificacao"]["serie"].zfill(3)
-    numero_nota                 = data["identificacao"]["numeroDocFiscal"].zfill(9)
-    numero_nota_formatado       = '.'.join([numero_nota[i:i+3] for i in range(0, 9, 3)])
-    chave_acesso_formatada      = formatar_chave_acesso(data["key"])
-    cep_formatado               = data["emitente"]["endereco"]["cep"][:5] + '-' + data["emitente"]["endereco"]["cep"][5:]
-    dest_municipio              = data["destinatario"]["endereco"]["codigoMunicipio"]
-    nome_municipio_dest         = requests.get(f'https://servicodados.ibge.gov.br/api/v1/localidades/municipios/{dest_municipio}').json()
-    emit_municipio              = data["emitente"]["endereco"]["codigoMunicipio"]
-    nome_municipio_emit         = requests.get(f'https://servicodados.ibge.gov.br/api/v1/localidades/municipios/{emit_municipio}').json()
-    cnpj_cpf_dest               = formatar_cnpj_cpf(data["destinatario"].get("cnpj") or data["destinatario"].get("cpf"))
-    dhEmissao_formatado         = dt_emissao.strftime("%d/%m/%Y")
-    dhSaida_formatado           = dt_entrada_saida.strftime("%d/%m/%Y")
-    hdSaida_formatada           = dt_entrada_saida.strftime("%H:%M:%S")
-    cep_emitente_formatado      = data["destinatario"]["endereco"]["cep"][:5] + '-' + data["destinatario"]["endereco"]["cep"][5:]
-    dest_cel                    = formatar_celular(data["destinatario"]["endereco"]["fone"])
-    modFrete_desc               = modFrete_descricao.get(data["transp"]["modFrete"], "Valor inválido")
-    transportadora              = data.get("transp", {}).get("transporta", {}).get("nome", "")
-    cnpj_cpf_transp             = data.get("transp", {}).get("transporta", {}).get("cnpj") or data.get("transp", {}).get("transporta", {}).get("cpf", "")
-    cnpj_cpf_formatado_transp   = formatar_cnpj_cpf(cnpj_cpf_transp)
-    inscricao_estadual          = data.get("transp", {}).get("transporta", {}).get("inscricaoEstadual", "")
-    endereco_completo           = data.get("transp", {}).get("transporta", {}).get("enderecoCompleto", "")
-    nome_municipio              = data.get("transp", {}).get("transporta", {}).get("nomeMunicipio", "")
-    uf_transporta               = data.get("transp", {}).get("transporta", {}).get("uf", "")
-    placa_veiculo               = data.get("transp", {}).get("veicTransp", {}).get("placa", "")
-    uf_veiculo                  = data.get("transp", {}).get("veicTransp", {}).get("uf", "")
-    rntc                        = data.get("transp", {}).get("veicTransp", {}).get("veic", {}).get("rntc", "")
-    quantidade_vol              = data.get("transp", {}).get("vol", [{}])[0].get("quantidade", "")
-    especie_vol                 = data.get("transp", {}).get("vol", [{}])[0].get("especie", "")
-    peso_liquido_vol            = data.get("transp", {}).get("vol", [{}])[0].get("pesoLiquido", "")
-    peso_bruto_vol              = data.get("transp", {}).get("vol", [{}])[0].get("pesoBruto", "")
-    marca_vol                   = data.get("transp", {}).get("vol", [{}])[0].get("marca", "")
-    numeracao_vol               = data.get("transp", {}).get("vol", [{}])[0].get("nVol", "")
-    text_link                   = "www.nfe.fazenda.gov.br/portal ou no site da Sefaz Autorizadora"
+    x_position = margin + 165 * mm
+    y_position = 241 * mm
+    dt_emissao = datetime.fromisoformat(data.identificacao.dataHoraEmissao)
+    dt_entrada_saida = datetime.fromisoformat(data.identificacao.dataHoraSaidaOuEntrada)
+    valor = float(data.dadosCobranca)
+    valor_formatado_canhoto = locale.currency(valor, grouping=True)
+    serie_formatada = data.identificacao.serie.zfill(3)
+    numero_nota = data.identificacao.numeroDocFiscal.zfill(9)
+    numero_nota_formatado = '.'.join([numero_nota[i:i+3] for i in range(0, 9, 3)])
+    chave_acesso_formatada = formatar_chave_acesso(data.key)
+    cep_formatado = data.emitente.endereco.cep[:5] + '-' + data.emitente.endereco.cep[5:]
+    dest_municipio = data.destinatario.endereco.codigoMunicipio
+    nome_municipio_dest = requests.get(f'https://servicodados.ibge.gov.br/api/v1/localidades/municipios/{dest_municipio}').json()
+    emit_municipio = data.emitente.endereco.codigoMunicipio
+    nome_municipio_emit = requests.get(f'https://servicodados.ibge.gov.br/api/v1/localidades/municipios/{emit_municipio}').json()
+    cnpj_cpf_dest = formatar_cnpj_cpf(data.destinatario.cnpj)
+    dhEmissao_formatado = dt_emissao.strftime("%d/%m/%Y")
+    dhSaida_formatado = dt_entrada_saida.strftime("%d/%m/%Y")
+    hdSaida_formatada = dt_entrada_saida.strftime("%H:%M:%S")
+    cep_emitente_formatado = data.destinatario.endereco.cep[:5] + '-' + data.destinatario.endereco.cep[5:]
+    dest_cel = formatar_celular(data.destinatario.endereco.fone)
+    modFrete_desc = modFrete_descricao.get(data.transp.modFrete, "Valor inválido")
+    transportadora = data.transp.transporta.nome if data.transp.transporta else ""
+    cnpj_cpf_transp = formatar_cnpj_cpf(data.transp.transporta.cnpj if data.transp.transporta and data.transp.transporta.cnpj else data.transp.transporta.cpf)
+    inscricao_estadual = data.transp.transporta.inscricaoEstadual if data.transp.transporta else ""
+    endereco_completo = data.transp.transporta.enderecoCompleto if data.transp.transporta else ""
+    nome_municipio = data.transp.transporta.nomeMunicipio if data.transp.transporta else ""
+    uf_transporta = data.transp.transporta.uf if data.transp.transporta else ""
+    placa_veiculo = data.transp.veicTransp.placa if data.transp.veicTransp else ""
+    uf_veiculo = data.transp.veicTransp.uf if data.transp.veicTransp else ""
+    rntc = data.transp.veicTransp.veic.rntc if data.transp.veicTransp and data.transp.veicTransp.veic else ""
+    quantidade_vol = data.transp.vol[0].quantidade if data.transp.vol else ""
+    especie_vol = data.transp.vol[0].especie if data.transp.vol else ""
+    peso_liquido_vol = data.transp.vol[0].pesoLiquido if data.transp.vol else ""
+    peso_bruto_vol = data.transp.vol[0].pesoBruto if data.transp.vol else ""
+    marca_vol = data.transp.vol[0].marca if data.transp.vol else ""
+    numeracao_vol = data.transp.vol[0].nVol if data.transp.vol else ""
+    text_link = "www.nfe.fazenda.gov.br/portal ou no site da Sefaz Autorizadora"
 
     # Textos
-    long_text = (f'RECEBEMOS DE {data["emitente"]["nome"]} OS PRODUTOS E/OU SERVIÇOS CONSTANTES DA NOTA FISCAL ELETRÔNICA INDICADA '
-                 f'ABAIXO. EMISSÃO: {data_formatada} - VALOR TOTAL: {valor_formatado_canhoto} - DESTINATÁRIO: {data["destinatario"]["nome"]} - '
-                 f'ENDEREÇO: {data["destinatario"]["endereco"]["logradouro"]} {data["destinatario"]["endereco"]["numero"]} {data["destinatario"]["endereco"]["complemento"]}')
+    long_text = (f'RECEBEMOS DE {data.emitente.nome} OS PRODUTOS E/OU SERVIÇOS CONSTANTES DA NOTA FISCAL ELETRÔNICA INDICADA '
+                 f'ABAIXO. EMISSÃO: {data_formatada} - VALOR TOTAL: {valor_formatado_canhoto} - DESTINATÁRIO: {data.destinatario.nome} - '
+                 f'ENDEREÇO: {data.destinatario.endereco.logradouro} {data.destinatario.endereco.numero} {data.destinatario.endereco.complemento}')
     x = 5 * mm
     y = height - 7 * mm
     max_width = 170 * mm
@@ -160,9 +158,9 @@ def render_first_page(canvas_draw, data, data_formatada, serie_formatada, numero
     canvas_draw.drawString(margin, 17.5 * mm, "DADOS ADICIONAIS")
     canvas_draw.setFont("Times-Roman", 7)
     draw_wrapped_text(canvas_draw, long_text, x, y, max_width, line_height)
-    canvas_draw.drawCentredString(margin + 45 * mm, 252 * mm, f'{data["emitente"]["endereco"]["logradouro"]} {data["emitente"]["endereco"]["numero"]}')
-    canvas_draw.drawCentredString(margin + 45 * mm, 249 * mm, f'{data["emitente"]["endereco"]["bairro"]}, {nome_municipio_emit["nome"]}/{data["emitente"]["endereco"]["uf"]} - {cep_formatado}')
-    canvas_draw.drawCentredString(margin + 45 * mm, 246 * mm, f'Telefone: {formatar_celular(data["emitente"]["endereco"]["fone"])}')
+    canvas_draw.drawCentredString(margin + 45 * mm, 252 * mm, f'{data.emitente.endereco.logradouro} {data.emitente.endereco.numero}')
+    canvas_draw.drawCentredString(margin + 45 * mm, 249 * mm, f'{data.emitente.endereco.bairro}, {nome_municipio_emit["nome"]}/{data.emitente.endereco.uf} - {cep_formatado}')
+    canvas_draw.drawCentredString(margin + 45 * mm, 246 * mm, f'Telefone: {formatar_celular(data.emitente.endereco.fone)}')
     canvas_draw.drawCentredString(margin + 165 * mm, 245 * mm, "Consulta de autenticidade no portal nacional da NF-e")
     canvas_draw.drawCentredString(x_position, y_position + 1 * mm, text_link)
 
@@ -176,36 +174,36 @@ def render_first_page(canvas_draw, data, data_formatada, serie_formatada, numero
     canvas_draw.setFont("Times-Bold", 8)
     protocolo = get_emissao_details(data)
     canvas_draw.drawCentredString(margin + 165 * mm, 234 * mm, f'{protocolo}')
-    canvas_draw.drawCentredString(margin + 45 * mm, 255 * mm, f'{data["emitente"]["nome"]}')
+    canvas_draw.drawCentredString(margin + 45 * mm, 255 * mm, f'{data.emitente.nome}')
     canvas_draw.drawCentredString(margin + 112.5 * mm, 261 * mm, "Fiscal Eletrônica")
     canvas_draw.drawString(margin + 98 * mm, 256 * mm, "0 - ENTRADA")
     canvas_draw.drawString(margin + 98 * mm, 252.5 * mm, "1 - SAÍDA")
-    canvas_draw.drawString(margin, 216 * mm, f'{data["destinatario"]["nome"]}')
+    canvas_draw.drawString(margin, 216 * mm, f'{data.destinatario.nome}')
     canvas_draw.drawCentredString(margin + 150 * mm, 216 * mm, cnpj_cpf_dest)
-    canvas_draw.drawString(margin, 209 * mm, f'{data["destinatario"]["endereco"]["logradouro"]} {data["destinatario"]["endereco"]["numero"]} {data["destinatario"]["endereco"]["complemento"]}')
-    canvas_draw.drawString(margin + 102 * mm, 209 * mm, f'{data["destinatario"]["endereco"]["bairro"]}')
+    canvas_draw.drawString(margin, 209 * mm, f'{data.destinatario.endereco.logradouro} {data.destinatario.endereco.numero} {data.destinatario.endereco.complemento}')
+    canvas_draw.drawString(margin + 102 * mm, 209 * mm, f'{data.destinatario.endereco.bairro}')
     canvas_draw.drawString(margin + 150 * mm, 209 * mm, f'{cep_emitente_formatado}')
     canvas_draw.drawString(margin, 202 * mm, f'{nome_municipio_dest["nome"]}')
     canvas_draw.drawCentredString(margin + 188 * mm, 216 * mm, f'{dhEmissao_formatado}')
     canvas_draw.drawCentredString(margin + 188 * mm, 209 * mm, f'{dhSaida_formatado}')
     canvas_draw.drawCentredString(margin + 188 * mm, 202 * mm, f'{hdSaida_formatada}')
-    canvas_draw.drawCentredString(margin + 155 * mm, 202 * mm, f'{data["destinatario"]["ie"]}')
-    canvas_draw.drawCentredString(margin + 99 * mm, 202 * mm, f'{data["destinatario"]["endereco"]["uf"]}')
+    canvas_draw.drawCentredString(margin + 155 * mm, 202 * mm, f'{data.destinatario.ie}')
+    canvas_draw.drawCentredString(margin + 99 * mm, 202 * mm, f'{data.destinatario.endereco.uf}')
     canvas_draw.drawCentredString(margin + 120 * mm, 202 * mm, f'{dest_cel}')
-    canvas_draw.drawRightString(margin + 29 * mm, 191 * mm, f'{formatar_moeda(data["total"]["icmsTot"]["vBc"])}')
-    canvas_draw.drawRightString(margin + 29 * mm, 184 * mm, f'{formatar_moeda(data["total"]["icmsTot"]["vFrete"])}')
-    canvas_draw.drawRightString(margin + 59 * mm, 191 * mm, f'{formatar_moeda(data["total"]["icmsTot"]["vIcms"])}')
-    canvas_draw.drawRightString(margin + 59 * mm, 184 * mm, f'{formatar_moeda(data["total"]["icmsTot"]["vSeg"])}')
-    canvas_draw.drawRightString(margin + 89 * mm, 191 * mm, f'{formatar_moeda(data["total"]["icmsTot"]["vBcSt"])}')
-    canvas_draw.drawRightString(margin + 89 * mm, 184 * mm, f'{formatar_moeda(data["total"]["icmsTot"]["vDesc"])}')
-    canvas_draw.drawRightString(margin + 119 * mm, 191 * mm, f'{formatar_moeda(data["total"]["icmsTot"]["vSt"])}')
-    canvas_draw.drawRightString(margin + 119 * mm, 184 * mm, f'{formatar_moeda(data["total"]["icmsTot"]["vOutro"])}')
-    canvas_draw.drawRightString(margin + 154 * mm, 191 * mm, f'{formatar_moeda(data["total"]["icmsTot"]["vIi"])}')
-    canvas_draw.drawRightString(margin + 154 * mm, 184 * mm, f'{formatar_moeda(data["total"]["icmsTot"]["vIpi"])}')
-    canvas_draw.drawRightString(margin + 171.5 * mm, 184 * mm, f'{formatar_moeda(data["total"]["icmsTot"]["vPis"])}')
-    canvas_draw.drawRightString(margin + 171.5 * mm, 191 * mm, f'{formatar_moeda(data["total"]["icmsTot"]["vCofins"])}')
-    canvas_draw.drawRightString(margin + 199 * mm, 191 * mm, f'{formatar_moeda(data["total"]["icmsTot"]["vProd"])}')
-    canvas_draw.drawRightString(margin + 199 * mm, 184 * mm, f'{formatar_moeda(data["total"]["icmsTot"]["vNf"])}')
+    canvas_draw.drawRightString(margin + 29 * mm, 191 * mm, f'{formatar_moeda(data.total.icmsTot.vBc)}')
+    canvas_draw.drawRightString(margin + 29 * mm, 184 * mm, f'{formatar_moeda(data.total.icmsTot.vFrete)}')
+    canvas_draw.drawRightString(margin + 59 * mm, 191 * mm, f'{formatar_moeda(data.total.icmsTot.vIcms)}')
+    canvas_draw.drawRightString(margin + 59 * mm, 184 * mm, f'{formatar_moeda(data.total.icmsTot.vSeg)}')
+    canvas_draw.drawRightString(margin + 89 * mm, 191 * mm, f'{formatar_moeda(data.total.icmsTot.vBcSt)}')
+    canvas_draw.drawRightString(margin + 89 * mm, 184 * mm, f'{formatar_moeda(data.total.icmsTot.vDesc)}')
+    canvas_draw.drawRightString(margin + 119 * mm, 191 * mm, f'{formatar_moeda(data.total.icmsTot.vSt)}')
+    canvas_draw.drawRightString(margin + 119 * mm, 184 * mm, f'{formatar_moeda(data.total.icmsTot.vOutro)}')
+    canvas_draw.drawRightString(margin + 154 * mm, 191 * mm, f'{formatar_moeda(data.total.icmsTot.vIi)}')
+    canvas_draw.drawRightString(margin + 154 * mm, 184 * mm, f'{formatar_moeda(data.total.icmsTot.vIpi)}')
+    canvas_draw.drawRightString(margin + 171.5 * mm, 184 * mm, f'{formatar_moeda(data.total.icmsTot.vPis)}')
+    canvas_draw.drawRightString(margin + 171.5 * mm, 191 * mm, f'{formatar_moeda(data.total.icmsTot.vCofins)}')
+    canvas_draw.drawRightString(margin + 199 * mm, 191 * mm, f'{formatar_moeda(data.total.icmsTot.vProd)}')
+    canvas_draw.drawRightString(margin + 199 * mm, 184 * mm, f'{formatar_moeda(data.total.icmsTot.vNf)}')
     canvas_draw.drawString(margin, 173 * mm, transportadora)
     canvas_draw.drawString(margin + 89 * mm, 173 * mm, rntc)
     canvas_draw.drawString(margin + 124 * mm, 173 * mm, placa_veiculo)
@@ -230,10 +228,10 @@ def render_first_page(canvas_draw, data, data_formatada, serie_formatada, numero
     canvas_draw.drawString(width - 27.5 * mm, 279 * mm, f'SÉRIE {serie_formatada}')
 
     canvas_draw.setFont("Times-Bold", 10)
-    canvas_draw.drawCentredString(margin + 60 * mm, 234 * mm, f'{data["identificacao"]["naturezaOperacao"]}')
-    canvas_draw.drawCentredString(margin + 35 * mm, 227 * mm, f'{data["emitente"]["inscricaoEstadual"]}')  
-    canvas_draw.drawCentredString(margin + 110 * mm, 227 * mm, f'{data["emitente"]["cnpj"]}')
-    canvas_draw.drawCentredString(margin + 170 * mm, 227 * mm, f'{formatar_cnpj_cpf(data["emitente"]["cnpj"])}')
+    canvas_draw.drawCentredString(margin + 60 * mm, 234 * mm, f'{data.identificacao.naturezaOperacao}')
+    canvas_draw.drawCentredString(margin + 35 * mm, 227 * mm, f'{data.emitente.inscricaoEstadual}')  
+    canvas_draw.drawCentredString(margin + 110 * mm, 227 * mm, f'{data.emitente.cnpj}')
+    canvas_draw.drawCentredString(margin + 170 * mm, 227 * mm, f'{formatar_cnpj_cpf(data.emitente.cnpj)}')
 
     canvas_draw.setFont("Times-Roman", 12)
     canvas_draw.drawCentredString(margin + 112 * mm, 267 * mm, "DANFE")
@@ -242,7 +240,7 @@ def render_first_page(canvas_draw, data, data_formatada, serie_formatada, numero
     canvas_draw.drawString(width - 26 * mm, 288 * mm, "NF-e")
     
     canvas_draw.setFont("Times-Bold", 22)
-    canvas_draw.drawCentredString(margin + 125 * mm, 252.5 * mm, f'{data["identificacao"]["tpNf"]}')
+    canvas_draw.drawCentredString(margin + 125 * mm, 252.5 * mm, f'{data.identificacao.tpNf}')
     
     # Logo
     largura_imagem = 100 
@@ -255,7 +253,7 @@ def render_first_page(canvas_draw, data, data_formatada, serie_formatada, numero
     canvas_draw.drawImage(logoCliente, x_centralizado, y_imagem, largura_imagem, altura_imagem)
     
     # Codigo de Barras
-    chave_acesso = data["key"]
+    chave_acesso = data.key
     codigo_barras = code128.Code128(chave_acesso, barHeight=10.5 * mm, barWidth=0.68)
     codigo_barras.drawOn(canvas_draw, margin + 125.5 * mm, 259.5 * mm)
     
@@ -377,47 +375,45 @@ def render_first_page(canvas_draw, data, data_formatada, serie_formatada, numero
 
 #--------------------------------------------------------------------PAGINA ADICIONAL----------------------------------------------------------------------#
 
-def render_additional_page(canvas_draw, data, width, height, margin):
+def render_additional_page(canvas_draw, data: Danfe, width, height, margin):
     # Formatações
-    adicionar_altura_y          = 20
-    serie_formatada             = data["identificacao"]["serie"].zfill(3)
-    numero_nota                 = data["identificacao"]["numeroDocFiscal"].zfill(9)
-    partes                      = [numero_nota[i:i+3] for i in range(0, len(numero_nota), 3)]
-    numero_nota_formatado       = '.'.join(partes)
-    cep_formatado               = data["emitente"]["endereco"]["cep"][:5] + '-' + data["emitente"]["endereco"]["cep"][5:]
-    adicionar_altura_y_lista    = 88
-    emit_municipio              = data["emitente"]["endereco"]["codigoMunicipio"]
-    response_municipio_emit     = requests.get(f'https://servicodados.ibge.gov.br/api/v1/localidades/municipios/{emit_municipio}')
-    nome_municipio_emit         = response_municipio_emit.json()
+    adicionar_altura_y = 20
+    serie_formatada = data.identificacao.serie.zfill(3)
+    numero_nota = data.identificacao.numeroDocFiscal.zfill(9)
+    partes = [numero_nota[i:i+3] for i in range(0, len(numero_nota), 3)]
+    numero_nota_formatado = '.'.join(partes)
+    cep_formatado = data.emitente.endereco.cep[:5] + '-' + data.emitente.endereco.cep[5:]
+    adicionar_altura_y_lista = 88
+    emit_municipio = data.emitente.endereco.codigoMunicipio
+    response_municipio_emit = requests.get(f'https://servicodados.ibge.gov.br/api/v1/localidades/municipios/{emit_municipio}')
+    nome_municipio_emit = response_municipio_emit.json()
 
     # Logo
-    largura_imagem      = 100
-    altura_imagem       = 23
-    linha_esquerda_x    = margin - 1 * mm
-    linha_direita_x     = margin + 95 * mm
-    x_centralizado      = linha_esquerda_x + ((linha_direita_x - linha_esquerda_x) / 2) - (largura_imagem / 2)
-    y_imagem            = (260 + adicionar_altura_y) * mm   
-    logoCliente         = "logo-outbound.jpg"
+    largura_imagem = 100
+    altura_imagem = 23
+    linha_esquerda_x = margin - 1 * mm
+    linha_direita_x = margin + 95 * mm
+    x_centralizado = linha_esquerda_x + ((linha_direita_x - linha_esquerda_x) / 2) - (largura_imagem / 2)
+    y_imagem = (260 + adicionar_altura_y) * mm   
+    logoCliente = "logo-outbound.jpg"
     canvas_draw.drawImage(logoCliente, x_centralizado, y_imagem, largura_imagem, altura_imagem)
 
     # Código de Barras Code 128
-    chave_acesso    = data["key"]
-    codigo_barras   = code128.Code128(chave_acesso, barHeight=10.5 * mm, barWidth=0.68)
-
+    chave_acesso = data.key
+    codigo_barras = code128.Code128(chave_acesso, barHeight=10.5 * mm, barWidth=0.68)
     codigo_barras.drawOn(canvas_draw, margin + 125.5 * mm, (259.5 + adicionar_altura_y) * mm)
-    chave_acesso_formatada = formatar_chave_acesso(data["key"])
+    chave_acesso_formatada = formatar_chave_acesso(data.key)
     
     # Link
-    x_position  = margin + 165 * mm
-    y_position  = (241 + adicionar_altura_y) * mm
-    text        = "www.nfe.fazenda.gov.br/portal ou no site da Sefaz Autorizadora"
-    link        = "http://www.nfe.fazenda.gov.br/portal"
-    text_width  = canvas_draw.stringWidth(text, "Times-Bold", 7)
-    link_x1     = x_position - (text_width / 2)
-    link_y1     = y_position
-    link_x2     = x_position + (text_width / 2)
-    link_y2     = y_position + 10 
-
+    x_position = margin + 165 * mm
+    y_position = (241 + adicionar_altura_y) * mm
+    text = "www.nfe.fazenda.gov.br/portal ou no site da Sefaz Autorizadora"
+    link = "http://www.nfe.fazenda.gov.br/portal"
+    text_width = canvas_draw.stringWidth(text, "Times-Bold", 7)
+    link_x1 = x_position - (text_width / 2)
+    link_y1 = y_position
+    link_x2 = x_position + (text_width / 2)
+    link_y2 = y_position + 10 
     canvas_draw.linkURL(link, (link_x1, link_y1, link_x2, link_y2), relative=1)
 
     # Textos
@@ -454,9 +450,9 @@ def render_additional_page(canvas_draw, data, width, height, margin):
     canvas_draw.drawString(margin, (154.5 + adicionar_altura_y_lista) * mm, "DADOS DOS PRODUTOS / SERVIÇOS")
 
     canvas_draw.setFont("Times-Roman", 7)
-    canvas_draw.drawCentredString(margin + 45 * mm, (252 + adicionar_altura_y) * mm, f'{data["emitente"]["endereco"]["logradouro"]} {data["emitente"]["endereco"]["numero"]}')
-    canvas_draw.drawCentredString(margin + 45 * mm, (249 + adicionar_altura_y) * mm, f'{data["emitente"]["endereco"]["bairro"]}, {nome_municipio_emit["nome"]}/{data["emitente"]["endereco"]["uf"]} - {cep_formatado}')
-    canvas_draw.drawCentredString(margin + 45 * mm, (246 + adicionar_altura_y) * mm, f'Telefone: {formatar_celular(data["emitente"]["endereco"]["fone"])}')
+    canvas_draw.drawCentredString(margin + 45 * mm, (252 + adicionar_altura_y) * mm, f'{data.emitente.endereco.logradouro} {data.emitente.endereco.numero}')
+    canvas_draw.drawCentredString(margin + 45 * mm, (249 + adicionar_altura_y) * mm, f'{data.emitente.endereco.bairro}, {nome_municipio_emit["nome"]}/{data.emitente.endereco.uf} - {cep_formatado}')
+    canvas_draw.drawCentredString(margin + 45 * mm, (246 + adicionar_altura_y) * mm, f'Telefone: {formatar_celular(data.emitente.endereco.fone)}')
     canvas_draw.drawCentredString(margin + 165 * mm, (245 + adicionar_altura_y) * mm, "Consulta de autenticidade no portal nacional da NF-e")
     canvas_draw.drawCentredString(x_position, y_position + 1 * mm, text)
 
@@ -469,7 +465,7 @@ def render_additional_page(canvas_draw, data, width, height, margin):
     canvas_draw.setFont("Times-Bold", 8)
     protocolo = get_emissao_details(data)
     canvas_draw.drawCentredString(margin + 165 * mm, (234 + adicionar_altura_y) * mm, f'{protocolo}')
-    canvas_draw.drawCentredString(margin + 45 * mm, (255 + adicionar_altura_y) * mm, f'{data["emitente"]["nome"]}')
+    canvas_draw.drawCentredString(margin + 45 * mm, (255 + adicionar_altura_y) * mm, f'{data.emitente.nome}')
     canvas_draw.drawCentredString(margin + 112.5 * mm, (261 + adicionar_altura_y) * mm, "Fiscal Eletrônica")
     canvas_draw.drawString(margin + 98 * mm, (256 + adicionar_altura_y) * mm, "0 - ENTRADA")
     canvas_draw.drawString(margin + 98 * mm, (252.5 + adicionar_altura_y) * mm, "1 - SAÍDA")
@@ -479,16 +475,16 @@ def render_additional_page(canvas_draw, data, width, height, margin):
     canvas_draw.drawCentredString(margin + 112.5 * mm, (245 + adicionar_altura_y) * mm, f'SÉRIE {serie_formatada}')
 
     canvas_draw.setFont("Times-Bold", 10)
-    canvas_draw.drawCentredString(margin + 60 * mm, (234 + adicionar_altura_y) * mm, f'{data["identificacao"]["naturezaOperacao"]}')
-    canvas_draw.drawCentredString(margin + 35 * mm, (227 + adicionar_altura_y) * mm, f'{data["emitente"]["inscricaoEstadual"]}')  
-    canvas_draw.drawCentredString(margin + 110 * mm, (227 + adicionar_altura_y) * mm, f'{data["emitente"]["cnpj"]}')
-    canvas_draw.drawCentredString(margin + 170 * mm, (227 + adicionar_altura_y) * mm, f'{formatar_cnpj_cpf(data["emitente"]["cnpj"])}')
+    canvas_draw.drawCentredString(margin + 60 * mm, (234 + adicionar_altura_y) * mm, f'{data.identificacao.naturezaOperacao}')
+    canvas_draw.drawCentredString(margin + 35 * mm, (227 + adicionar_altura_y) * mm, f'{data.emitente.inscricaoEstadual}')  
+    canvas_draw.drawCentredString(margin + 110 * mm, (227 + adicionar_altura_y) * mm, f'{data.emitente.cnpj}')
+    canvas_draw.drawCentredString(margin + 170 * mm, (227 + adicionar_altura_y) * mm, f'{formatar_cnpj_cpf(data.emitente.cnpj)}')
 
     canvas_draw.setFont("Times-Roman", 12)
     canvas_draw.drawCentredString(margin + 112 * mm, (267 + adicionar_altura_y) * mm, "DANFE")
 
     canvas_draw.setFont("Times-Bold", 22)
-    canvas_draw.drawCentredString(margin + 125 * mm, (252.5 + adicionar_altura_y) * mm, f'{data["identificacao"]["tpNf"]}')
+    canvas_draw.drawCentredString(margin + 125 * mm, (252.5 + adicionar_altura_y) * mm, f'{data.identificacao.tpNf}')
 
 
     # Linhas
