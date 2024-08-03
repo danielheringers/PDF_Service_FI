@@ -1,4 +1,4 @@
-# utils.py
+# general_pdf_utils.py
 import locale
 import re
 from datetime import datetime
