@@ -133,13 +133,14 @@ class DetItem(BaseModel):
  
 class Transp(BaseModel):
     modFrete: str
-    transporta: Transporta
-    veicTransp: VeicTransp
-    vol: Volume
+    transporta: Optional[Transporta] = None
+    veicTransp: Optional[VeicTransp] = None
+    vol: Optional[Volume] = None
 
 class Transporta(BaseModel):
     nome: str
     cnpj: str
+    cpf: str
     inscricaoEstadual: str
     enderecoCompleto: str
     nomeMunicipio: str
