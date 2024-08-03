@@ -133,7 +133,33 @@ class DetItem(BaseModel):
  
 class Transp(BaseModel):
     modFrete: str
- 
+    transporta: Transporta
+    veicTransp: VeicTransp
+    vol: Volume
+
+class Transporta(BaseModel):
+    nome: str
+    cnpj: str
+    inscricaoEstadual: str
+    enderecoCompleto: str
+    nomeMunicipio: str
+    uf: str
+
+class VeicTransp(BaseModel):
+    placa: str
+    uf: str
+    veic: Veic
+
+class Veic(BaseModel):
+    rntc: str
+
+class Volume(BaseModel):
+    quantidade: str
+    especie: str
+    pesoLiquido: str
+    pesoBruto: str
+    marca: str
+    nVol: str
  
 class DetPagItem(BaseModel):
     indPag: str

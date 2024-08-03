@@ -56,12 +56,12 @@ def render_first_page(canvas_draw, data: Danfe, data_formatada, serie_formatada,
     placa_veiculo = data.transp.veicTransp.placa if data.transp.veicTransp else ""
     uf_veiculo = data.transp.veicTransp.uf if data.transp.veicTransp else ""
     rntc = data.transp.veicTransp.veic.rntc if data.transp.veicTransp and data.transp.veicTransp.veic else ""
-    quantidade_vol = data.transp.vol[0].quantidade if data.transp.vol else ""
-    especie_vol = data.transp.vol[0].especie if data.transp.vol else ""
-    peso_liquido_vol = data.transp.vol[0].pesoLiquido if data.transp.vol else ""
-    peso_bruto_vol = data.transp.vol[0].pesoBruto if data.transp.vol else ""
-    marca_vol = data.transp.vol[0].marca if data.transp.vol else ""
-    numeracao_vol = data.transp.vol[0].nVol if data.transp.vol else ""
+    quantidade_vol = data.transp.vol.quantidade if data.transp.vol else ""
+    especie_vol = data.transp.vol.especie if data.transp.vol else ""
+    peso_liquido_vol = data.transp.vol.pesoLiquido if data.transp.vol else ""
+    peso_bruto_vol = data.transp.vol.pesoBruto if data.transp.vol else ""
+    marca_vol = data.transp.vol.marca if data.transp.vol else ""
+    numeracao_vol = data.transp.vol.nVol if data.transp.vol else ""
     text_link = "www.nfe.fazenda.gov.br/portal ou no site da Sefaz Autorizadora"
 
     # Textos
