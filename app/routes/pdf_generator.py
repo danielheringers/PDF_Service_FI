@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Body
 from fastapi.responses import StreamingResponse
 from app.utils.danfe.danfe_utils import create_pdf
 from io import BytesIO
-from app.models.danfe import Danfe
+from app.models.danfe.models import Danfe
 router = APIRouter()
 
 @router.post("/generate-danfe-pdf")

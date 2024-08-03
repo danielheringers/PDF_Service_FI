@@ -5,7 +5,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.units import mm
 from io import BytesIO
 from app.utils.danfe.danfe_render_nfe import render_first_page, render_items
-
+from app.models.danfe.models import Danfe
 locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
 class NumberedCanvas(canvas.Canvas):
@@ -33,7 +33,7 @@ class NumberedCanvas(canvas.Canvas):
         else:
             self.drawCentredString(margin + 112.5 * mm, 261 * mm, f"FOLHA {self._pageNumber}/{page_count}")
 
-def create_pdf(data: dict) -> BytesIO:
+def create_pdf(data: Danfe) -> BytesIO:
     buffer = BytesIO()
     pdf_canvas = NumberedCanvas(buffer, pagesize=A4)
     width, height = A4
