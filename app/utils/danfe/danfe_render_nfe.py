@@ -47,11 +47,12 @@ def render_first_page(canvas_draw, data: Danfe, data_formatada, serie_formatada,
     cep_emitente_formatado = data.destinatario.endereco.cep[:5] + '-' + data.destinatario.endereco.cep[5:]
     dest_cel = formatar_celular(data.destinatario.endereco.fone)
     modFrete_desc = modFrete_descricao.get(data.transp.modFrete, "Valor inválido")
+
+    # Dados de transporte
     transportadora = data.transp.transporta.nome if data.transp.transporta else ""
     cnpj_cpf_transp = ""
     if data.transp.transporta:
         cnpj_cpf_transp = formatar_cnpj_cpf(data.transp.transporta.cnpj if data.transp.transporta.cnpj else data.transp.transporta.cpf)
-    cnpj_cpf_transp = formatar_cnpj_cpf(data.transp.transporta.cnpj if data.transp.transporta and data.transp.transporta.cnpj else data.transp.transporta.cpf)
     inscricao_estadual = data.transp.transporta.inscricaoEstadual if data.transp.transporta else ""
     endereco_completo = data.transp.transporta.enderecoCompleto if data.transp.transporta else ""
     nome_municipio = data.transp.transporta.nomeMunicipio if data.transp.transporta else ""
@@ -536,7 +537,7 @@ def render_item_line(canvas_draw, item, y, margin):
     canvas_draw.setFont("Times-Roman", 5)
     
     # Renderizar descrição do produto com quebra de linha
-    descricao = item["prod"].get("descricao", "")
+    descricao = item.prod.descricao
     descricao_linhas = [descricao[i:i+47] for i in range(0, len(descricao), 47)]
     for i, linha in enumerate(descricao_linhas):
         canvas_draw.drawString(margin + 19 * mm, y - (i * 4 * mm), linha)
@@ -545,19 +546,19 @@ def render_item_line(canvas_draw, item, y, margin):
     y -= (len(descricao_linhas) - 1) * 4 * mm
     
     # Renderizar os demais campos
-    canvas_draw.drawCentredString(margin + 8 * mm, y, item["prod"].get("codigo", ""))
-    canvas_draw.drawCentredString(margin + 87.5 * mm, y, item["prod"].get("ncm", ""))
-    canvas_draw.drawCentredString(margin + 100 * mm, y, item["imposto"]["icms"].get("cst", "").zfill(3))
-    canvas_draw.drawCentredString(margin + 110 * mm, y, item["prod"].get("codigoFiscalOperacoes", ""))
-    canvas_draw.drawCentredString(margin + 117.5 * mm, y, item["prod"].get("unidadeComercial", ""))
-    canvas_draw.drawRightString(margin + 129 * mm, y, item["prod"].get("quantidadeComercial", ""))
-    canvas_draw.drawRightString(margin + 139 * mm, y, formatar_moeda(item["prod"].get("valorUnitarioComercializacao", "")))
-    canvas_draw.drawRightString(margin + 149 * mm, y, formatar_moeda(item["prod"].get("valorTotalBruto", "")))
-    canvas_draw.drawRightString(margin + 159 * mm, y, formatar_moeda(item["imposto"]["icms"].get("vBc", "")))
-    canvas_draw.drawRightString(margin + 169 * mm, y, formatar_moeda(item["imposto"]["icms"].get("vImp", "")))
-    canvas_draw.drawRightString(margin + 179 * mm, y, formatar_moeda(item["imposto"]["ipi"].get("vImp", "")))
-    canvas_draw.drawRightString(margin + 189 * mm, y, formatar_moeda(item["imposto"]["icms"].get("pImp", "")))
-    canvas_draw.drawRightString(margin + 199 * mm, y, formatar_moeda(item["imposto"]["ipi"].get("pImp", "")))
+    canvas_draw.drawCentredString(margin + 8 * mm, y, item.prod.codigo)
+    canvas_draw.drawCentredString(margin + 87.5 * mm, y, item.prod.ncm)
+    canvas_draw.drawCentredString(margin + 100 * mm, y, item.imposto.icms.cst.zfill(3))
+    canvas_draw.drawCentredString(margin + 110 * mm, y, item.prod.codigoFiscalOperacoes)
+    canvas_draw.drawCentredString(margin + 117.5 * mm, y, item.prod.unidadeComercial)
+    canvas_draw.drawRightString(margin + 129 * mm, y, item.prod.quantidadeComercial)
+    canvas_draw.drawRightString(margin + 139 * mm, y, formatar_moeda(item.prod.valorUnitarioComercializacao))
+    canvas_draw.drawRightString(margin + 149 * mm, y, formatar_moeda(item.prod.valorTotalBruto))
+    canvas_draw.drawRightString(margin + 159 * mm, y, formatar_moeda(item.imposto.icms.vBc))
+    canvas_draw.drawRightString(margin + 169 * mm, y, formatar_moeda(item.imposto.icms.vImp))
+    canvas_draw.drawRightString(margin + 179 * mm, y, formatar_moeda(item.imposto.ipi.vImp))
+    canvas_draw.drawRightString(margin + 189 * mm, y, formatar_moeda(item.imposto.icms.pImp))
+    canvas_draw.drawRightString(margin + 199 * mm, y, formatar_moeda(item.imposto.ipi.pImp))
 
     # Renderizar linhas tracejadas após a descrição completa
     canvas_draw.setDash(4, 1)
@@ -583,15 +584,16 @@ def render_item_line(canvas_draw, item, y, margin):
 
     return y  # Retornar a nova coordenada y para o próximo item
 
+
 def render_items(canvas_draw, items, width, height, margin, data):
-    y                   = 147 * mm
-    line_height         = 4 * mm
-    numero_de_paginas   = 0
-    current_items       = 0
+    y = 147 * mm
+    line_height = 4 * mm
+    numero_de_paginas = 0
+    current_items = 0
 
     for i, item in enumerate(items):
         # Calcular a altura necessária para o item atual
-        descricao = item["prod"].get("descricao", "")
+        descricao = item.prod.descricao
         descricao_linhas = [descricao[j:j+47] for j in range(0, len(descricao), 47)]
         item_height = (len(descricao_linhas) - 1) * 4 * mm + line_height
 
@@ -617,7 +619,7 @@ def render_items(canvas_draw, items, width, height, margin, data):
         y = 236 * mm  # Linha de referência da página adicional
         current_items = 0
         for item in remaining_items:
-            descricao = item["prod"].get("descricao", "")
+            descricao = item.prod.descricao
             descricao_linhas = [descricao[j:j+47] for j in range(0, len(descricao), 47)]
             item_height = (len(descricao_linhas) - 1) * 4 * mm + line_height
             

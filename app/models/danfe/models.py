@@ -213,3 +213,10 @@ class Danfe(BaseModel):
     tipoOperacao: str
     tenantid: str
     key: str
+    eventos: Optional[List[Evento]] = None
+
+class Evento(BaseModel):
+    type: str
+    protocolo: str
+    dhEvento: str
+    communicationId: str

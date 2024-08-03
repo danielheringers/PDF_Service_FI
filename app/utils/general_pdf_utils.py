@@ -3,6 +3,8 @@ import locale
 import re
 from datetime import datetime
 from reportlab.lib.units import mm
+from typing import Optional
+from app.models.danfe.models import Danfe
 
 def draw_messages(canvas, start_y, decrement_mm, messages, margin):
     start_y_position = start_y * mm
@@ -55,16 +57,18 @@ def formatar_celular(numero):
 def formatar_chave_acesso(chave):
     return ' '.join(chave[i:i+4] for i in range(0, len(chave), 4))
 
-def get_emissao_details(dados):
-    for evento in dados.get("eventos", []):
-        if evento.get("type") == "EMISSÃO":
-            protocolo = evento.get("protocolo")
-            dh_evento = evento.get("dhEvento")
+
+def get_emissao_details(dados: Danfe) -> Optional[str]:
+    for evento in dados.eventos:
+        if evento.type == "EMISSÃƒO":
+            protocolo = evento.protocolo
+            dh_evento = evento.dhEvento
             if protocolo and dh_evento:
                 dt = datetime.fromisoformat(dh_evento)
                 dh_evento_formatado = dt.strftime("%d/%m/%Y %H:%M:%S")
                 return f'{protocolo} - {dh_evento_formatado}'
     return None
+
 
 def formatar_cnpj_cpf(numero):
     numero_str = re.sub(r'\D', '', str(numero))
