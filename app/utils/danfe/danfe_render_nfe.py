@@ -3,7 +3,7 @@ from datetime import datetime
 import locale
 from reportlab.lib.units import mm
 from reportlab.graphics.barcode import code128
-
+from app.models.danfe.models import Danfe
 from app.utils.general_pdf_utils import (
     formatar_moeda,
     draw_wrapped_text,
