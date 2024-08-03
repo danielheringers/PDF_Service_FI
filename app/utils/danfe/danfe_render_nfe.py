@@ -48,6 +48,9 @@ def render_first_page(canvas_draw, data: Danfe, data_formatada, serie_formatada,
     dest_cel = formatar_celular(data.destinatario.endereco.fone)
     modFrete_desc = modFrete_descricao.get(data.transp.modFrete, "Valor inválido")
     transportadora = data.transp.transporta.nome if data.transp.transporta else ""
+    cnpj_cpf_transp = ""
+    if data.transp.transporta:
+        cnpj_cpf_transp = formatar_cnpj_cpf(data.transp.transporta.cnpj if data.transp.transporta.cnpj else data.transp.transporta.cpf)
     cnpj_cpf_transp = formatar_cnpj_cpf(data.transp.transporta.cnpj if data.transp.transporta and data.transp.transporta.cnpj else data.transp.transporta.cpf)
     inscricao_estadual = data.transp.transporta.inscricaoEstadual if data.transp.transporta else ""
     endereco_completo = data.transp.transporta.enderecoCompleto if data.transp.transporta else ""
