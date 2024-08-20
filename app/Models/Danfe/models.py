@@ -2,7 +2,23 @@ from __future__ import annotations
 from typing import Any, List, Optional
 from pydantic import BaseModel
  
- 
+#-------------------------------------------------------------------------#
+#--------------------------Tipando em Python------------------------------#
+#-------------------------------------------------------------------------#
+# Padrões de Tipagem
+
+# Caso o campo seja obrigatorio
+# Campo: tipo
+
+# Caso o campo seja opcional use o modelo abaixo
+# Campo: Optional[List[Evento]]
+
+# Caso o tipo seja opcional e você queira definir um valor substituto utilize o modelo abaixo, o valor none pode ser qualquer outro valor.
+# Campo: Optional[List[Evento]] = none
+#-------------------------------------------------------------------------#
+#--------------------------        Fim      ------------------------------#
+#-------------------------------------------------------------------------#
+
 class Identificacao(BaseModel):
     codigoUf: str
     codigoNf: str
@@ -201,6 +217,7 @@ class Total(BaseModel):
     icmsTot: IcmsTot
  
 class Danfe(BaseModel):
+    branchId: str
     identificacao: Identificacao
     destinatario: Destinatario
     emitente: Emitente
@@ -213,7 +230,8 @@ class Danfe(BaseModel):
     tipoOperacao: str
     tenantid: str
     key: str
-    eventos: Optional[List[Evento]] = None
+    eventos: List[Evento]
+
 
 class Evento(BaseModel):
     type: str

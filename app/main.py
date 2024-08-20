@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from app.routes import pdf_generator
-from app.models.Errors.errors import custom_error_response
+from app.Routes import pdf_generator
+from app.Models.Errors.errors import custom_error_response
 
 app = FastAPI()
 

@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException, Body
 from fastapi.responses import StreamingResponse, JSONResponse
-from app.utils.danfe.danfe_utils import create_pdf
-from app.models.danfe.models import Danfe
-from app.models.Errors.errors import custom_error_response
+from app.Utils.Danfe.danfe_utils import create_pdf
+from app.Models.Danfe.models import Danfe
+from app.Models.Errors.errors import custom_error_response
 
 router = APIRouter()
 

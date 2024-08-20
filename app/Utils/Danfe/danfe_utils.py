@@ -4,8 +4,8 @@ from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import mm
 from io import BytesIO
-from app.utils.danfe.danfe_render_nfe import render_first_page, render_items
-from app.models.danfe.models import Danfe
+from app.Utils.Danfe.danfe_render_nfe import render_first_page, render_items
+from app.Models.Danfe.models import Danfe
 locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
 class NumberedCanvas(canvas.Canvas):
