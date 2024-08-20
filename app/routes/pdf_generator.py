@@ -18,22 +18,22 @@ def create_danfe_pdf_endpoint(data: Danfe = Body(...)):
             media_type='application/pdf', 
             headers={"Content-Disposition": "inline; filename=document.pdf"}
         )
-    except ValueError as e:
+    except HTTPException as e:
         error_response = custom_error_response(
-            code=400,
-            message="Bad Request",
-            code_error="PDF_001",
-            msg=str(e),
-            location="body",
-            property_name="Danfe"
+            code=e.status_code,
+            message="HTTP Error",
+            code_error="ORBIT_10001",
+            msg=e.detail,
+            location="body"
         )
-        return JSONResponse(status_code=400, content=error_response)
+        return JSONResponse(status_code=e.status_code, content=error_response)
     except Exception as e:
+        # Captura qualquer outro tipo de exceção
         error_response = custom_error_response(
             code=500,
             message="Internal Server Error",
-            code_error="PDF_50001",
-            msg="An unexpected error occurred",
+            code_error="ORBIT_50001",
+            msg=str(e),
             location="server"
         )
         return JSONResponse(status_code=500, content=error_response)
