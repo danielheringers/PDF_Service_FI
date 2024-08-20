@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timezone
 import uuid
 
 
@@ -6,7 +6,7 @@ def custom_error_response(code: int, message: str, code_error: str, msg: str, lo
     return {
         "code": code,
         "message": message,
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.now(timezone.utc).isoformat(),
         "requestid": str(uuid.uuid4()),
         "errors": [
             {
