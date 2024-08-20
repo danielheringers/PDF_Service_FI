@@ -1,6 +1,5 @@
-from fastapi import APIRouter, HTTPException, Body, Header, Depends, Request
-from fastapi.responses import JSONResponse, StreamingResponse
-from fastapi.exceptions import RequestValidationError
+from fastapi import APIRouter, HTTPException, Body, Header, Depends
+from fastapi.responses import StreamingResponse, JSONResponse
 from app.Utils.Danfe.danfe_utils import create_pdf
 from app.Models.Danfe.models import Danfe
 from app.Models.Errors.errors import custom_error_response
@@ -13,25 +12,6 @@ def verify_headers(
     useremail: str = Header(...)
 ):
     return {"tenantid": tenantid, "username": username, "useremail": useremail}
-
-@router.exception_handler(RequestValidationError)
-async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    errors = exc.errors()
-    for error in errors:
-        if error['loc'][0] == 'header':
-            header_name = error['loc'][1]
-            error_response = custom_error_response(
-                code=400,
-                message="Bad Request",
-                code_error="ORBIT_10001",
-                msg=f"{header_name} is required",
-                location="header",
-                property_name=header_name,
-                value=None
-            )
-            return JSONResponse(status_code=400, content=error_response)
-    
-    return JSONResponse(status_code=422, content={"detail": errors})
 
 @router.post("/generate-danfe-pdf")
 def create_danfe_pdf_endpoint(
