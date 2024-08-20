@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Body, HTTPException, Header, Depends
 from fastapi.responses import JSONResponse, StreamingResponse
-from app.Models.Errors.errors import custom_error_response
 from app.Utils.Danfe.danfe_utils import create_pdf
 from app.Models.Danfe.models import Danfe
 from app.Models.Errors.custom_exception import HeaderMissingException

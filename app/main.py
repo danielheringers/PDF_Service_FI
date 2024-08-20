@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from datetime import datetime, timezone
 import uuid
 from app.Routes.pdf_generator import router as pdf_generator_router
-from app.Models.Errors.custom_exception import BodyMissingException, HeaderMissingException
+from app.Models.Errors.custom_exception import HeaderMissingException
 
 app = FastAPI()
 
