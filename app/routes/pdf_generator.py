@@ -28,7 +28,6 @@ def create_danfe_pdf_endpoint(data: Danfe = Body(...)):
         )
         return JSONResponse(status_code=e.status_code, content=error_response)
     except Exception as e:
-        # Captura qualquer outro tipo de exceção
         error_response = custom_error_response(
             code=500,
             message="Internal Server Error",
