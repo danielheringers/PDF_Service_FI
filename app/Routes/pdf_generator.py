@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Body
+from fastapi import APIRouter, HTTPException, Body, Header, Depends
 from fastapi.responses import StreamingResponse, JSONResponse
 from app.Utils.Danfe.danfe_utils import create_pdf
 from app.Models.Danfe.models import Danfe
@@ -6,8 +6,22 @@ from app.Models.Errors.errors import custom_error_response
 
 router = APIRouter()
 
+def verify_headers(
+    tenantid: str = Header(...),
+    username: str = Header(...),
+    useremail: str = Header(...)
+):
+    if not tenantid or not username or not useremail:
+        raise HTTPException(
+            status_code=400,
+            detail="Missing required headers: tenantid, username, or useremail"
+        )
+
 @router.post("/generate-danfe-pdf")
-def create_danfe_pdf_endpoint(data: Danfe = Body(...)):
+def create_danfe_pdf_endpoint(
+    data: Danfe = Body(...),
+    headers: dict = Depends(verify_headers)
+):
     try:
         pdf_buffer = create_pdf(data)
         pdf_buffer.seek(0)
