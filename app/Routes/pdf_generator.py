@@ -1,81 +1,31 @@
-import datetime
-from time import timezone
-import uuid
-from fastapi import APIRouter, HTTPException, Body, Header, Depends, Request
+from fastapi import APIRouter, Depends, HTTPException, Body, Header
 from fastapi.responses import StreamingResponse, JSONResponse
 from app.Utils.Danfe.danfe_utils import create_pdf
 from app.Models.Danfe.models import Danfe
 from app.Models.Errors.errors import custom_error_response
+from app.main import HeaderMissingException
 
 router = APIRouter()
-
-header = {
-    "tenantid": str,
-    "username": str,
-    "useremail": str
-}
 
 def verify_headers(
     tenantid: str = Header(None),
     username: str = Header(None),
     useremail: str = Header(None)
 ):
-    errors = []
-
+    missing_headers = []
     if tenantid is None:
-        errors.append({
-            "code_error": "ORBIT_10001",
-            "msg": "tenantid is required",
-            "location": "header",
-            "property_errors": [{
-                "value": None,
-                "type": "technical-error",
-                "code_error": "ORBIT_10001",
-                "msg": "tenantid is required",
-                "property": "tenantid"
-            }]
-        })
-
+        missing_headers.append("tenantid")
     if username is None:
-        errors.append({
-            "code_error": "ORBIT_10002",
-            "msg": "username is required",
-            "location": "header",
-            "property_errors": [{
-                "value": None,
-                "type": "technical-error",
-                "code_error": "ORBIT_10002",
-                "msg": "username is required",
-                "property": "username"
-            }]
-        })
-
+        missing_headers.append("username")
     if useremail is None:
-        errors.append({
-            "code_error": "ORBIT_10003",
-            "msg": "useremail is required",
-            "location": "header",
-            "property_errors": [{
-                "value": None,
-                "type": "technical-error",
-                "code_error": "ORBIT_10003",
-                "msg": "useremail is required",
-                "property": "useremail"
-            }]
-        })
-
-    if errors:
-        error_response = {
-            "code": 400,
-            "message": "Bad Request",
-            "timestamp": datetime.datetime.now(timezone.utc).isoformat(),
-            "requestid": str(uuid.uuid4()),
-            "errors": errors
-        }
-        raise HTTPException(status_code=400, detail=error_response)
-
+        missing_headers.append("useremail")
+    
+    if missing_headers:
+        raise HeaderMissingException(missing_headers)
+    
     return {"tenantid": tenantid, "username": username, "useremail": useremail}
 
+@router.post("/generate-danfe-pdf")
 def create_danfe_pdf_endpoint(
     data: Danfe = Body(...),
     headers: dict = Depends(verify_headers)
@@ -92,7 +42,7 @@ def create_danfe_pdf_endpoint(
         error_response = custom_error_response(
             code=e.status_code,
             message="HTTP Error",
-            code_error="PDF_B001",
+            code_error="PDF_B00001",
             msg=e.detail,
             location="body"
         )
@@ -101,7 +51,7 @@ def create_danfe_pdf_endpoint(
         error_response = custom_error_response(
             code=500,
             message="Internal Server Error",
-            code_error="PDF_B500",
+            code_error="PDF_500001",
             msg=str(e),
             location="server"
         )
