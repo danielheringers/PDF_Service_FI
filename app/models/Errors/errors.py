@@ -1,13 +1,12 @@
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 import uuid
 
-PST = timezone(timedelta(hours=-8))
 
 def custom_error_response(code: int, message: str, code_error: str, msg: str, location: str, property_name: str = None, value=None):
     return {
         "code": code,
         "message": message,
-        "timestamp": datetime.now(PST).isoformat(),
+        "timestamp": datetime.now(timezone.utc).isoformat(timespec='seconds'),
         "requestid": str(uuid.uuid4()),
         "errors": [
             {
