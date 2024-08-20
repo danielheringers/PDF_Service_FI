@@ -1,0 +1,51 @@
+{
+	"data": [
+		{
+			"branch_id": "e5cc14fe-2cd0-4936-a798-9c2dae47374a",
+			"erp_id": "51",
+			"bank_slip_type": "merchandise_sales",
+			"total": 5999,
+			"payment_type": 1,
+			"buyer": {
+				"address": {
+					"city": "Belo horizonte",
+					"complement": "Casa",
+					"email": "igor.carvalho@seidor.com",
+					"neighborhood": "Santa efigênia",
+					"number": 50,
+					"postal_code": "30110-002",
+					"state": "MG",
+					"street_name": "Rua Ulhoa Cintra"
+				},
+				"cpf_cnpj": "90913481009",
+				"name": "Caio Castro foundation",
+				"knowledgment_of_debt": "N"
+			},
+			"calendar": {
+				"due_date": "2025-07-26"
+			}
+		}
+	]
+}
+{
+	"erp_id": "51",
+	"bank_slip_type": "merchandise_sales",
+	"total": 5999,
+	"buyer": {
+	"name": "Caio Castro foundation",
+	"cpf_cnpj": "90913481009",
+	"address": {
+		"complement": "Casa",
+		"number": 50,
+		"city": "Belo horizonte",
+		"neighborhood": "Santa efigênia",
+		"postal_code": "30110-002",
+		"state": "MG",
+		"street_name": "Rua Ulhoa Cintra",
+		"email": "igor.carvalho@seidor.com"
+	}
+	},
+	"calendar": {
+		"due_date": "2024-07-26"
+	},
+}
