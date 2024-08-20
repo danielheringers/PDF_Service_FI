@@ -1,15 +1,10 @@
-import datetime
-from time import timezone
-import uuid
 from fastapi import FastAPI, Request
-from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from datetime import datetime, timezone
+import uuid
 from app.Routes.pdf_generator import router as pdf_generator_router
-from app.Models.Errors.errors import custom_error_response
-class HeaderMissingException(Exception):
-    def __init__(self, missing_headers: list):
-        self.missing_headers = missing_headers
-        
+from app.Models.Errors.custom_exception import HeaderMissingException
+
 app = FastAPI()
 
 @app.exception_handler(HeaderMissingException)
@@ -17,13 +12,13 @@ async def header_missing_exception_handler(request: Request, exc: HeaderMissingE
     errors = []
     for header in exc.missing_headers:
         errors.append({
-            "code_error": f"PDF_H000{exc.missing_headers.index(header) + 1}",
+            "code_error": f"ORBIT_1000{exc.missing_headers.index(header) + 1}",
             "msg": f"{header} is required",
             "location": "header",
             "property_errors": [{
                 "value": None,
                 "type": "technical-error",
-                "code_error": f"PDF_H000{exc.missing_headers.index(header) + 1}",
+                "code_error": f"ORBIT_1000{exc.missing_headers.index(header) + 1}",
                 "msg": f"{header} is required",
                 "property": header
             }]
@@ -39,4 +34,3 @@ async def header_missing_exception_handler(request: Request, exc: HeaderMissingE
     return JSONResponse(status_code=400, content=response)
 
 app.include_router(pdf_generator_router)
-
