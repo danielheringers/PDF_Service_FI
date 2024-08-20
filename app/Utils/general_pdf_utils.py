@@ -4,7 +4,7 @@ import re
 from datetime import datetime
 from reportlab.lib.units import mm
 from typing import Optional
-from app.models.danfe.models import Danfe
+from app.Models.Danfe.models import Danfe
 
 def draw_messages(canvas, start_y, decrement_mm, messages, margin):
     start_y_position = start_y * mm
