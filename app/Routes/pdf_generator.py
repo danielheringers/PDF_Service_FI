@@ -16,7 +16,8 @@ def verify_headers(
             status_code=400,
             detail="Missing required headers: tenantid, username, or useremail"
         )
-    return JSONResponse(status_code=HTTPException.status_code, content=HTTPException.detail)
+    else:
+        pass
 
 @router.post("/generate-danfe-pdf")
 def create_danfe_pdf_endpoint(
