@@ -7,7 +7,7 @@ def custom_error_response(code: int, message: str, code_error: str, msg: str, lo
     return {
         "code": code,
         "message": message,
-        "timestamp": datetime.now(timezone.utc).isoformat(timespec='seconds'),
+        "timestamp": datetime.datetime.now(timezone.utc).isoformat(),
         "requestid": str(uuid.uuid4()),
         "errors": [
             {
