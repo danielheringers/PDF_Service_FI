@@ -1,3 +1,6 @@
+import datetime
+from time import timezone
+import uuid
 from fastapi import APIRouter, HTTPException, Body, Header, Depends, Request
 from fastapi.responses import StreamingResponse, JSONResponse
 from app.Utils.Danfe.danfe_utils import create_pdf
@@ -6,49 +9,73 @@ from app.Models.Errors.errors import custom_error_response
 
 router = APIRouter()
 
+header = {
+    "tenantid": str,
+    "username": str,
+    "useremail": str
+}
+
 def verify_headers(
     tenantid: str = Header(None),
     username: str = Header(None),
     useremail: str = Header(None)
 ):
+    errors = []
+
     if tenantid is None:
-        error_response = custom_error_response(
-            code=400,
-            message="Bad Request",
-            code_error="PDF_H001",
-            msg="tenantid is required",
-            location="header",
-            property_name="tenantid",
-            value=None
-        )
-        raise HTTPException(status_code=400, detail=error_response["message"], headers=error_response)
+        errors.append({
+            "code_error": "ORBIT_10001",
+            "msg": "tenantid is required",
+            "location": "header",
+            "property_errors": [{
+                "value": None,
+                "type": "technical-error",
+                "code_error": "ORBIT_10001",
+                "msg": "tenantid is required",
+                "property": "tenantid"
+            }]
+        })
+
     if username is None:
-        error_response = custom_error_response(
-            code=400,
-            message="Bad Request",
-            code_error="PDF_H002",
-            msg="username is required",
-            location="header",
-            property_name="username",
-            value=None
-        )
-        raise HTTPException(status_code=400, detail=error_response["message"], headers=error_response)
+        errors.append({
+            "code_error": "ORBIT_10002",
+            "msg": "username is required",
+            "location": "header",
+            "property_errors": [{
+                "value": None,
+                "type": "technical-error",
+                "code_error": "ORBIT_10002",
+                "msg": "username is required",
+                "property": "username"
+            }]
+        })
+
     if useremail is None:
-        error_response = custom_error_response(
-            code=400,
-            message="Bad Request",
-            code_error="PDF_H003",
-            msg="useremail is required",
-            location="header",
-            property_name="useremail",
-            value=None
-        )
-        raise HTTPException(status_code=400, detail=error_response["message"], headers=error_response)
+        errors.append({
+            "code_error": "ORBIT_10003",
+            "msg": "useremail is required",
+            "location": "header",
+            "property_errors": [{
+                "value": None,
+                "type": "technical-error",
+                "code_error": "ORBIT_10003",
+                "msg": "useremail is required",
+                "property": "useremail"
+            }]
+        })
+
+    if errors:
+        error_response = {
+            "code": 400,
+            "message": "Bad Request",
+            "timestamp": datetime.datetime.now(timezone.utc).isoformat(),
+            "requestid": str(uuid.uuid4()),
+            "errors": errors
+        }
+        raise HTTPException(status_code=400, detail=error_response)
 
     return {"tenantid": tenantid, "username": username, "useremail": useremail}
 
-
-@router.post("/generate-danfe-pdf")
 def create_danfe_pdf_endpoint(
     data: Danfe = Body(...),
     headers: dict = Depends(verify_headers)
@@ -74,7 +101,7 @@ def create_danfe_pdf_endpoint(
         error_response = custom_error_response(
             code=500,
             message="Internal Server Error",
-            code_error="PDF_500",
+            code_error="PDF_B500",
             msg=str(e),
             location="server"
         )
