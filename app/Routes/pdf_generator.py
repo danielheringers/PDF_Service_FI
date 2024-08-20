@@ -25,34 +25,15 @@ def verify_headers(
     
     return {"tenantid": tenantid, "username": username, "useremail": useremail}
 
-@router.post("/generate-danfe-pdf")
-def create_danfe_pdf_endpoint(
+@router.post("/generate-danfe-pdf", status_code=201)
+async def create_danfe_pdf_endpoint(
     data: Danfe = Body(...),
     headers: dict = Depends(verify_headers)
 ):
-    try:
-        pdf_buffer = create_pdf(data)
-        pdf_buffer.seek(0)
-        return StreamingResponse(
-            pdf_buffer, 
-            media_type='application/pdf', 
-            headers={"Content-Disposition": "inline; filename=document.pdf"}
-        )
-    except HTTPException as e:
-        error_response = custom_error_response(
-            code=e.status_code,
-            message="HTTP Error",
-            code_error="PDF_B00001",
-            msg=e.detail,
-            location="body"
-        )
-        return JSONResponse(status_code=e.status_code, content=error_response)
-    except Exception as e:
-        error_response = custom_error_response(
-            code=500,
-            message="Internal Server Error",
-            code_error="PDF_500001",
-            msg=str(e),
-            location="server"
-        )
-        return JSONResponse(status_code=500, content=error_response)
+    pdf_buffer = create_pdf(data)
+    pdf_buffer.seek(0)
+    return StreamingResponse(
+        pdf_buffer, 
+        media_type='application/pdf', 
+        headers={"Content-Disposition": "inline; filename=document.pdf"}
+    )
