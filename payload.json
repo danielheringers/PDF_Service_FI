@@ -1,273 +1,169 @@
 {
-    "branchId": "c7e944e4-7f02-4560-b495-1d7e9353f4cf",
-    "versao": "4.00",
-    "identificacao": {
-      "codigoUf": "53",
-      "codigoNf": "62296",
-      "tpNf": "1",
-      "naturezaOperacao": "Venda de bem do ativo imobilizado",
-      "serie": "1",
-      "numeroDocFiscal": "21659",
-      "dataHoraEmissao": "2024-07-30T15:34:54-03:00",
-      "dataHoraSaidaOuEntrada": "2024-07-30T15:34:54-03:00",
-      "idLocalDestino": "2",
-      "codigoMunicipioFg": "5300108",
-      "formatoNfe": "1",
-      "finalidade": "1",
-      "indFinal": "1",
-      "indPres": "2",
-      "indIntermed": "0"
-    },
-    "destinatario": {
-      "cnpj": "26702164000154",
-      "nome": "R. C. GOMES COMERCIO DE BENS ELETRONICOS",
-      "endereco": {
-        "logradouro": "AVENIDA ITALIA",
-        "numero": "928",
-        "complemento": "SALA 1608",
-        "bairro": "JARDIM DAS NACOES",
-        "codigoMunicipio": "3554102",
-        "uf": "SP",
-        "cep": "12030212",
-        "codigoPais": "1058",
-        "fone": "5197417625",
-        "ie": "688527487112"
-      },
-      "indIeDestinatario": "9",
-      "ie": "688527487112"
-    },
-    "emitente": {
-      "endereco": {
-        "logradouro": "SRTVS Conjunto D Blocos A",
-        "numero": "701",
-        "bairro": "Asa Sul",
-        "codigoMunicipio": "5300108",
-        "municipio": "Brasília",
-        "uf": "DF",
-        "cep": "70340907",
-        "codigoPais": "1058",
-        "pais": "BRASIL",
-        "fone": "3192802222",
-        "complemento": null
-      },
-      "nome": "ALLUGATOR SERVICOS DIGITAIS LTDA",
-      "nomeFantasia": "ALLUGATOR",
-      "inscricaoEstadual": "0812951400260",
-      "codigoRegimeTributario": "3",
-      "cnpj": "25053921000305",
-      "inscricaoMunicipal": "0812951400260"
-    },
-    "det": [
-      {
-        "nItem": "1",
-        "prod": {
-          "codigo": "AT013777",
-          "cean": "SEM GTIN",
-          "descricao": "'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'",
-          "ncm": "85171300",
-          "cest": "2105300",
-          "cBenef": "DF890000",
-          "codigoFiscalOperacoes": "6551",
-          "unidadeComercial": "UN",
-          "quantidadeComercial": "1.0000",
-          "valorUnitarioComercializacao": "1410.620000",
-          "valorTotalBruto": "1410.62",
-          "ceanTrib": "SEM GTIN",
-          "unidadeTributavel": "UN",
-          "quantidadeTributavel": "1.0000",
-          "valorUnitarioTributacao": "1410.620000",
-          "valorFrete": "0.00",
-          "indTot": "1",
-          "di": []
-        },
-        "imposto": {
-          "icms": {
-            "orig": "0",
-            "cst": "41",
-            "modBc": "3",
-            "vBc": "0.00",
-            "pImp": "0.00",
-            "vImp": "0.00"
-          },
-          "pis": {
-            "cst": "99",
-            "vBc": "0.00",
-            "pPis": "0.00",
-            "vPis": "0.00"
-          },
-          "cofins": {
-            "cst": "99",
-            "vBc": "0.00",
-            "pImp": "0.00",
-            "vImp": "0.00"
-          },
-          "ipi": {
-            "cEnq": "999",
-            "cst": "99",
-            "vBc": "0.00",
-            "pImp": "0.00",
-            "vImp": "0.00"
-          }
-        }
-      },
-      {
-        "nItem": "2",
-        "prod": {
-          "codigo": "AT014039",
-          "cean": "SEM GTIN",
-          "descricao": "iPhone 14 Pro 128GB",
-          "ncm": "85171300",
-          "cest": "2105300",
-          "cBenef": "DF890000",
-          "codigoFiscalOperacoes": "6551",
-          "unidadeComercial": "UN",
-          "quantidadeComercial": "1.0000",
-          "valorUnitarioComercializacao": "2529.670000",
-          "valorTotalBruto": "2529.67",
-          "ceanTrib": "SEM GTIN",
-          "unidadeTributavel": "UN",
-          "quantidadeTributavel": "1.0000",
-          "valorUnitarioTributacao": "2529.670000",
-          "valorFrete": "0.00",
-          "indTot": "1",
-          "di": []
-        },
-        "imposto": {
-          "icms": {
-            "orig": "0",
-            "cst": "41",
-            "modBc": "3",
-            "vBc": "0.00",
-            "pImp": "0.00",
-            "vImp": "0.00"
-          },
-          "pis": {
-            "cst": "99",
-            "vBc": "0.00",
-            "pPis": "0.00",
-            "vPis": "0.00"
-          },
-          "cofins": {
-            "cst": "99",
-            "vBc": "0.00",
-            "pImp": "0.00",
-            "vImp": "0.00"
-          },
-          "ipi": {
-            "cEnq": "999",
-            "cst": "99",
-            "vBc": "0.00",
-            "pImp": "0.00",
-            "vImp": "0.00"
-          }
-        }
-      },
-      {
-        "nItem": "3",
-        "prod": {
-          "codigo": "AT018349",
-          "cean": "SEM GTIN",
-          "descricao": "iPhone 14 Pro 128GB",
-          "ncm": "85171300",
-          "cest": "2105300",
-          "cBenef": "DF890000",
-          "codigoFiscalOperacoes": "6551",
-          "unidadeComercial": "UN",
-          "quantidadeComercial": "1.0000",
-          "valorUnitarioComercializacao": "2529.670000",
-          "valorTotalBruto": "2529.67",
-          "ceanTrib": "SEM GTIN",
-          "unidadeTributavel": "UN",
-          "quantidadeTributavel": "1.0000",
-          "valorUnitarioTributacao": "2529.670000",
-          "valorFrete": "0.00",
-          "indTot": "1",
-          "di": []
-        },
-        "imposto": {
-          "icms": {
-            "orig": "0",
-            "cst": "41",
-            "modBc": "3",
-            "vBc": "0.00",
-            "pImp": "0.00",
-            "vImp": "0.00"
-          },
-          "pis": {
-            "cst": "99",
-            "vBc": "0.00",
-            "pPis": "0.00",
-            "vPis": "0.00"
-          },
-          "cofins": {
-            "cst": "99",
-            "vBc": "0.00",
-            "pImp": "0.00",
-            "vImp": "0.00"
-          },
-          "ipi": {
-            "cEnq": "999",
-            "cst": "99",
-            "vBc": "0.00",
-            "pImp": "0.00",
-            "vImp": "0.00"
-          }
-        }
-      }
-    ],
-    "transp": {
-      "modFrete": "0"
-    },
-    "pag": {
-      "detPag": [
-        {
-          "indPag": "0",
-          "tPag": "90",
-          "vPag": "0.00"
-        }
-      ]
-    },
-    "total": {
-      "icmsTot": {
-        "vBc": "0.00",
-        "vIcms": "0.00",
-        "vIcmsDeson": "0.00",
-        "vFcpUfDest": "0.00",
-        "vIcmsUfDest": "0.00",
-        "vIcmsUfRemet": "0.00",
-        "vFcp": "0.00",
-        "vBcSt": "0.00",
-        "vSt": "0.00",
-        "vFcpSt": "0.00",
-        "vFcpStRet": "0.00",
-        "vProd": "140880.01",
-        "vFrete": "0.00",
-        "vSeg": "0.00",
-        "vDesc": "0.00",
-        "vIi": "0.00",
-        "vIpi": "0.00",
-        "vIpiDevol": "0.00",
-        "vPis": "0.00",
-        "vCofins": "0.00",
-        "vOutro": "0.00",
-        "vNf": "140880.01"
-      }
-    },
-    "emails": [],
-    "eventos": [
-      {
-        "type": "EMISSÃO",
-        "protocolo": "253240016462360",
-        "dhEvento": "2024-07-30T15:35:00-03:00",
-        "communicationId": "cf46d1a3-e99f-4147-b73f-b0b7402e9ab3"
-      }
-    ],
-    "dadosCobranca": "140880.01",
-    "tipoOperacao": "output",
-    "tenantid": "19850b37-06ff-4d3b-a4a2-9279a2700003",
-    "key": "53240725053921000305550010000216591000622960",
-    "status": {
-      "cStat": "100",
-      "mStat": "AUTORIZADA"
-    }
-  }
+	"branchId": "c7e944e4-7f02-4560-b495-1d7e9353f4cf",
+	"versao": "4.00",
+	"identificacao": {
+		"codigoUf": "53",
+		"codigoNf": 2,
+		"tpNf": "1",
+		"naturezaOperacao": "Venda de bem do ativo imobilizado",
+		"serie": "1",
+		"numeroDocFiscal": "21659",
+		"dataHoraEmissao": "2024-07-30T15:34:54-03:00",
+		"dataHoraSaidaOuEntrada": "2024-07-30T15:34:54-03:00",
+		"idLocalDestino": "2",
+		"codigoMunicipioFg": "5300108",
+		"formatoNfe": "1",
+		"finalidade": "1",
+		"indFinal": "1",
+		"indPres": "2",
+		"indIntermed": "0"
+	},
+	"destinatario": {
+		"cnpj": "26702164000154",
+		"nome": "R. C. GOMES COMERCIO DE BENS ELETRONICOS",
+		"endereco": {
+			"logradouro": "AVENIDA ITALIA",
+			"numero": "928",
+			"complemento": "SALA 1608",
+			"bairro": "JARDIM DAS NACOES",
+			"codigoMunicipio": "3554102",
+			"uf": "SP",
+			"cep": "12030212",
+			"codigoPais": "1058",
+			"fone": "5197417625",
+			"ie": "688527487112"
+		},
+		"indIeDestinatario": "9",
+		"ie": "688527487112"
+	},
+	"emitente": {
+		"endereco": {
+			"logradouro": "SRTVS Conjunto D Blocos A",
+			"numero": "701",
+			"bairro": "Asa Sul",
+			"codigoMunicipio": "5300108",
+			"municipio": "Brasília",
+			"uf": "DF",
+			"cep": "70340907",
+			"codigoPais": "1058",
+			"pais": "BRASIL",
+			"fone": "3192802222",
+			"complemento": null
+		},
+		"nome": "ALLUGATOR SERVICOS DIGITAIS LTDA",
+		"nomeFantasia": "ALLUGATOR",
+		"inscricaoEstadual": "0812951400260",
+		"codigoRegimeTributario": "3",
+		"cnpj": "25053921000305",
+		"inscricaoMunicipal": "0812951400260"
+	},
+	"det": [
+		{
+			"nItem": "1",
+			"prod": {
+				"codigo": "AT013777",
+				"cean": "SEM GTIN",
+				"descricao": "iPhone 14 Pro 128GB",
+				"ncm": "85171300",
+				"cest": "2105300",
+				"cBenef": "DF890000",
+				"codigoFiscalOperacoes": "6551",
+				"unidadeComercial": "UN",
+				"quantidadeComercial": "1.0000",
+				"valorUnitarioComercializacao": "1410.620000",
+				"valorTotalBruto": "1410.62",
+				"ceanTrib": "SEM GTIN",
+				"unidadeTributavel": "UN",
+				"quantidadeTributavel": "1.0000",
+				"valorUnitarioTributacao": "1410.620000",
+				"valorFrete": "0.00",
+				"indTot": "1",
+				"di": []
+			},
+			"imposto": {
+				"icms": {
+					"orig": "0",
+					"cst": "41",
+					"modBc": "3",
+					"vBc": "0.00",
+					"pImp": "0.00",
+					"vImp": "0.00"
+				},
+				"pis": {
+					"cst": "99",
+					"vBc": "0.00",
+					"pPis": "0.00",
+					"vPis": "0.00"
+				},
+				"cofins": {
+					"cst": "99",
+					"vBc": "0.00",
+					"pImp": "0.00",
+					"vImp": "0.00"
+				},
+				"ipi": {
+					"cEnq": "999",
+					"cst": "99",
+					"vBc": "0.00",
+					"pImp": "0.00",
+					"vImp": "0.00"
+				}
+			}
+		}
+	],
+	"transp": {
+		"modFrete": "0"
+	},
+	"pag": {
+		"detPag": [
+			{
+				"indPag": "0",
+				"tPag": "90",
+				"vPag": "0.00"
+			}
+		]
+	},
+	"total": {
+		"icmsTot": {
+			"vBc": "0.00",
+			"vIcms": "0.00",
+			"vIcmsDeson": "0.00",
+			"vFcpUfDest": "0.00",
+			"vIcmsUfDest": "0.00",
+			"vIcmsUfRemet": "0.00",
+			"vFcp": "0.00",
+			"vBcSt": "0.00",
+			"vSt": "0.00",
+			"vFcpSt": "0.00",
+			"vFcpStRet": "0.00",
+			"vProd": "140880.01",
+			"vFrete": "0.00",
+			"vSeg": "0.00",
+			"vDesc": "0.00",
+			"vIi": "0.00",
+			"vIpi": "0.00",
+			"vIpiDevol": "0.00",
+			"vPis": "0.00",
+			"vCofins": "0.00",
+			"vOutro": "0.00",
+			"vNf": "140880.01"
+		}
+	},
+	"emails": [],
+	"eventos": [
+		{
+			"type": "EMISSÃO",
+			"protocolo": "253240016462360",
+			"dhEvento": "2024-07-30T15:35:00-03:00",
+			"communicationId": "cf46d1a3-e99f-4147-b73f-b0b7402e9ab3"
+		}
+	],
+	"dadosCobranca": "140880.01",
+	"tipoOperacao": "output",
+	"tenantid": "19850b37-06ff-4d3b-a4a2-9279a2700003",
+	"key": "53240725053921000305550010000216591000622960",
+	"status": {
+		"cStat": "100",
+		"mStat": "AUTORIZADA"
+	}
+}
