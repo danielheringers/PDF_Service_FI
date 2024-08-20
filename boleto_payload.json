@@ -1,0 +1,102 @@
+{
+	"billing": {
+		"billing_internal_number": "13",
+		"payment_type": 2,
+		"buyer": {
+			"knowledgment_of_debt": "S",
+			"address": {
+				"city": "Belo horizonte",
+				"complement": "Não informado",
+				"email": "daniel.heringer@seidor.com",
+				"neighborhood": "Santa Efigênia",
+				"number": 50,
+				"phone": "33991531299",
+				"postal_code": "30150230",
+				"state": "MG",
+				"street_name": "Rua Ulhoa Cintra"
+			},
+			"cpf_cnpj": "11272278662",
+			"name": "Daniel Souza Heringer"
+		},
+		"amount_details": {
+			"discount": {
+				"fixed_date": [
+					{
+						"date": "2024-08-17",
+						"value": 1500
+					}
+				],
+				"modality": 1
+			},
+			"fine": {
+				"modality": 1,
+				"value": 1465.85
+			},
+			"interest": {
+				"modality": 1,
+				"value": 100.58
+			}
+		},
+		"bank_slip_type": "DM",
+		"billing_id": "94b24a22-4658-423c-90a9-5fd8e497413c",
+		"billing_provider_number": "10908",
+		"calendar": {
+			"due_date": "28/08/2024",
+			"expiration_date": "01/09/2024",
+			"expedition_date": "13/08/2024"
+		},
+		"total": "14.658,54",
+		"messages": [
+			""
+		]
+	},
+	"erp_id": "13",
+	"payment_info": {
+		"bar_code": "000959611000146585430779469631404402978413256000",
+		"digitable_line": "000930779469632140440297284132560008596110001465854",
+		"qr_code_pix": "eyJpZCI6ICI5NGIyNGEyMi00NjU4LTQyM2MtOTBhOS01ZmQ4ZTQ5NzQxM2MiLCAiYW1vdW50IjogIjE0NjU4NTQiLCAiaXRlbXMiOiBbXX0=",
+		"qr_code_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhIAAAISAQAAAACxRhsSAAAE3UlEQVR4nO2dzY3jOBCFX60E9FECJoAORc5gQ2pMSJuBFIoDaEA6GpDx9lAsknLPzO5i3Gyv8XgQbP18IIFCqf5YMuJ3x/LHbyMAMcQQQwwxxBBDDDHEKAxLo4edcDWz8WpmY1w4bWbA1vsjdtri/tOd5yGGGD8ZJElMJMm1I2d0xLR2JLmD87CDXAFM1d+O1WPzo6xFjOdnbEk72tt6NWC4GICOmM49zMaOWMauig2YWf8Z8xBDjH/D4DyQWEYgDh05Dxcjz/m932AeYohRj/72xPLnCmDrYUC/G3A1AD1s+utqmM4fHnictYjxvIwQu4EANsAAA4BuNwDANAOG4b0ntm63fF+dHniUtYjx9IzFzB18TGtHTCvgB2w9MJ1faCekv+YhATO7/zzEEOOHw/Vp0Y4EdgDDDmKD/wJwNSyv8cuV6n3nIYYY/8yw09YD2JKK5PcRsNNwMSyuNkPHAh0542qhWe87DzHE+MnwSKjHRUmPn3L2CxEwzQdgID0k4KaB4qdiNGFk6UQYpMMeRiqZ3+8dkVRpluK4RXIqxuczfqBPARfHmwtkykxVOpaSUzGaMFLe9MYCdWVZef6RUAWSFKcnJKdiNGFU+jRJHTomL39gtlTJKr/v9imlT8VoxqjqUOBmaDhJxXFKVSrc0xMzUJmwklMxPp8R7/0hoqZeL1V0ZymfWjt39ZPEyj4Vox2j1qdZi4Z0AnAv33XsMVFVLIVHWYsYz8sIOc0Fp15cuqb4qd8yl6hpKNp4QnIqRgtGBJ1WAIholFulPo4xfYb3BPn7YjRk5OBolk5/7wPpV0hsRPfTQe99MVoy8FGBZi9/zTcd7VMAUN5UjJaMQ96UZH1hLedSwCqMVOX3xfgKhr2tQKo1zWGqZYxzwNXIc9506ufydqnHWosYz8hI9acuk8MOYPu2czn1MAwrLNWfdjuAbreJcd/yejHebx5iiPHLUcf5ARQLtCT0wzS9qaGC3vtitGXc2KLh0V/MK1KW10uq51/GXJiq974Y7RhV/LREo5CNzyrEn7OqdTWV9KkYTRiHOpThmLcvkfwSU43sf4T9JaditGDkvGkp0d/BXBNdJfRTICq0reRUjIaMYz3/IcRfvdmLjs3pKe07EaMho47zAzhIZ/GUqqvlIDkVoxmjzpveBJ2yuVr29hVjVvujxPgKRnQ4jbq+juT5xfv1VS3QUheUY6epR1uLGM/HqO3T3Ny0OP3Fe6q2RpXHpE/FaMOo6/pyAf9h3wkOxSgodX3q0ytGa4a35xlKBjUi+Sm6fzWSF/OQQOo0lTMDD7YWMZ6QUW16TvujEM16S01qye+XOgAMeu+L0YxRG5pZYqs2PlN28FNcYI9zK+Tvi9GWUb53kopQ19jJnwtO7eSdpZFuWV4ZPVEfay1iPDHDNeaaXvlWyeSQbdHthZjOL6zP3XseYojxS0Z87wSL9d7/lN/Ha+5/CpiF9+TnpjV/UeLR1iLG8zF+8FkIANM6woA+N5r2VtJ9dJt+79WfX4yvZNgb49NRfoi20Zy3ItMdvZn/581DDDEOo0rZV9/jy55/aUAxA7eZKfn7YjRiJB25uBHawab1G7iM7z2BjoaBvqMPGN57VLtMt363ab7XPMQQ41fDPpTu/eexPMpaxBBDDDHEEEMMMcT4/zP+BpMOrh0SOujfAAAAAElFTkSuQmCC"
+	},
+	"bank_account": {
+		"id": 1,
+		"external_id": "c2ec74fb-6b03-4628-8814-6d6584143037",
+		"tenant_id": "f9abfdb2-3c8a-4b45-b45b-13b7a27a763f",
+		"name": "Daniel Seidor Pay",
+		"document_number": "11272278662",
+		"wallet_number": null,
+		"convenant_code": 109,
+		"agency": "3091",
+		"account_number": 28472,
+		"account_digit": 3,
+		"pix_dict_key": "11272278662",
+		"pix_dict_key_type": "cpf",
+		"bank": "341",
+		"provider": "shipay",
+		"created_by": "igor.carvalho@seidor.com",
+		"created_at": "2024-08-09T17:59:55.423Z",
+		"updated_by": null,
+		"updated_at": "2024-08-09T17:59:55.423Z",
+		"client_accounts": [
+			{
+				"branch_id": "5905178c-209b-41ca-9f35-ed892fd20ea9",
+				"is_default": true
+			}
+		],
+		"bank_slip_config": {
+			"id": 1,
+			"bank_slip_type": "merchandise_sales",
+			"days_valid_after_due": 3,
+			"days_to_negative_report": 4,
+			"days_to_protest": 4,
+			"messages": "[\"\"]",
+			"amount_details": null,
+			"bank_account_id": 1,
+			"send_email_to_buyers": true
+		},
+		"shipay_credential": {
+			"bank_account_id": 1,
+			"shipay_client_id": "q7x0ugz6C0pKnVglq7qTHNa1UWyWRdLy3p7-z-W-Mn2OrRcQnd65pLHFPMKBdgCOG3gkSrIRu50soLHAYUZNcZ8GrLgjCt0dPGDpR2Ntqd5254y5ZG3yuj_oW4t5DzgwQMfIKrhrcY0QZbFAHSYmtJqZ4KwVaXD_a43o6yxaSTQ"
+		}
+	},
+	"bank_code": "341-7"
+}

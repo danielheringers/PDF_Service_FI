@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Body, HTTPException, Header, Depends
 from fastapi.responses import JSONResponse, StreamingResponse
-from app.Utils.Danfe.danfe_utils import create_pdf
+from app.Models.Boleto.models import Boleto
+from app.Utils.Boleto.boleto_render import create_pdf_boleto
+from app.Utils.Danfe.danfe_utils import create_pdf_danfe
 from app.Models.Danfe.models import Danfe
 from app.Models.Errors.custom_exception import HeaderMissingException
 
@@ -24,15 +26,29 @@ def verify_headers(
     
     return {"tenantid": tenantid, "username": username, "useremail": useremail}
 
-@router.post("/generate-danfe-pdf", status_code=201)
+@router.post("/gerar/pdf/danfe")
 async def create_danfe_pdf_endpoint(
     data: Danfe = Body(...),
     headers: dict = Depends(verify_headers)
 ):
-    pdf_buffer = create_pdf(data)
+    pdf_buffer = create_pdf_danfe(data)
     pdf_buffer.seek(0)
     return StreamingResponse(
         pdf_buffer, 
         media_type='application/pdf', 
-        headers={"Content-Disposition": "inline; filename=document.pdf"}
+        headers={"Content-Disposition": f'inline; filename={data.identificacao.codigoNf}.pdf'}
+    )
+    
+    
+@router.post("/gerar/pdf/boleto")
+async def create_danfe_pdf_endpoint(
+    data: Boleto = Body(...),
+    headers: dict = Depends(verify_headers)
+):
+    pdf_buffer = create_pdf_boleto(data)
+    pdf_buffer.seek(0)
+    return StreamingResponse(
+        pdf_buffer, 
+        media_type='application/pdf', 
+        headers={"Content-Disposition": f'inline; filename={data.erp_id}.pdf'}
     )

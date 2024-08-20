@@ -33,7 +33,7 @@ class NumberedCanvas(canvas.Canvas):
         else:
             self.drawCentredString(margin + 112.5 * mm, 261 * mm, f"FOLHA {self._pageNumber}/{page_count}")
 
-def create_pdf(data: Danfe) -> BytesIO:
+def create_pdf_danfe(data: Danfe) -> BytesIO:
     buffer = BytesIO()
     pdf_canvas = NumberedCanvas(buffer, pagesize=A4)
     width, height = A4
