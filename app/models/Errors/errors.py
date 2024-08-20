@@ -3,6 +3,7 @@ import uuid
 
 
 def custom_error_response(code: int, message: str, code_error: str, msg: str, location: str, property_name: str = None, value=None):
+    
     return {
         "code": code,
         "message": message,
