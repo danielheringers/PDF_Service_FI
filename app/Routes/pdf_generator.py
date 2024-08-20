@@ -11,11 +11,14 @@ def verify_headers(
     username: str = Header(...),
     useremail: str = Header(...)
 ):
+    # Aqui verificamos se os valores estão presentes
     if not tenantid or not username or not useremail:
         raise HTTPException(
             status_code=400,
             detail="Missing required headers: tenantid, username, or useremail"
         )
+    # Se todos os headers estiverem presentes, retornamos um dicionário com eles
+    return {"tenantid": tenantid, "username": username, "useremail": useremail}
 
 @router.post("/generate-danfe-pdf")
 def create_danfe_pdf_endpoint(
