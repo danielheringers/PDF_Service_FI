@@ -1,9 +1,7 @@
 from fastapi import APIRouter, HTTPException, Body
 from fastapi.responses import StreamingResponse, JSONResponse
-from io import BytesIO
 from app.utils.danfe.danfe_utils import create_pdf
 from app.models.danfe.models import Danfe
-from datetime import datetime
 from app.models.Errors.errors import custom_error_response
 
 router = APIRouter()
