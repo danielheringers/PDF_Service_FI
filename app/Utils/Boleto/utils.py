@@ -70,28 +70,27 @@ def instrucoes_de_pagamento(canvas_draw, start_y, decrement_mm, data, margin):
     instructions = []
     
     amount_details = data.billing.amount_details
-    discount = amount_details.discount
-    fine = amount_details.fine
-    interest = amount_details.interest
-    rebate = getattr(amount_details, 'rebate', None)
-    bank_slip_config = data.bank_account.bank_slip_config
-    days_after_due = bank_slip_config.days_valid_after_due
+    discount = amount_details.discount if amount_details else None
+    fine = amount_details.fine if amount_details else None
+    interest = amount_details.interest if amount_details else None
+    rebate = amount_details.rebate if amount_details else None
+    bank_slip_config = data.bank_account.bank_slip_config 
+    days_after_due = bank_slip_config.days_valid_after_due if bank_slip_config else None
     calendar = data.billing.calendar
     expiration_date = calendar.expiration_date
-
     if not discount and not fine and not interest and not rebate:
         instructions = [ 
             "Em caso de dúvidas, entre em contato com o beneficiário"
         ]
     else:
-        if fine.value > 0:
+        if fine and fine.value > 0:
             modality = fine.modality
             if modality == 1:
                 instructions.append(f"Multa de {formatar_para_real(fine.value)} após data de vencimento")
             elif modality == 2:
                 instructions.append(f"Multa de {fine.value}% após data de vencimento")
         
-        if interest.value > 0:
+        if interest and interest.value > 0:
             modality = interest.modality
             if modality == 1:
                 instructions.append(f"Juros de {formatar_para_real(interest.value)} por dia corrido após o vencimento")
@@ -110,7 +109,7 @@ def instrucoes_de_pagamento(canvas_draw, start_y, decrement_mm, data, margin):
             elif modality == 8:
                 instructions.append(f"Juros de {interest.value}% ao ano após o vencimento")
 
-        if discount.modality:
+        if discount and discount.modality:
             modality = discount.modality
             data_desconto = discount.fixed_date[0].date if discount.fixed_date else None
             if data_desconto:
@@ -137,7 +136,7 @@ def instrucoes_de_pagamento(canvas_draw, start_y, decrement_mm, data, margin):
             elif modality == 2:
                 instructions.append(f"Abatimento de {rebate.value}% no valor da cobrança")
 
-        if days_after_due > 0:
+        if days_after_due and days_after_due > 0:
             instructions.append(f"Não receber após {days_after_due} dias de vencimento.")
 
         instructions.append("Em caso de dúvidas, entre em contato com o beneficiário")

@@ -14,7 +14,7 @@ async def header_missing_exception_handler(request: Request, exc: HeaderMissingE
     errors = []
     for header in exc.missing_headers:
         errors.append({
-            "code_error": f"PDF_H_000{exc.missing_headers.index(header) + 1}",
+            "code_error": 400,
             "msg": f"{header} is required",
             "location": "header",
             "property_errors": [{
@@ -47,25 +47,25 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
         
         if loc[0] == "body":
             errors.append({
-                "code_error": "PDF_0001",
+                "code_error": "PDF_0001_Body",
                 "msg": msg,
                 "location": "body",
                 "property_errors": [{
                     "value": err['ctx'].get('value') if 'ctx' in err else None,
                     "type": "validation-error",
-                    "code_error": f'PDF_0001_{".".join(map(str, loc[1:]))}',
+                    "code_error": f'PDF_0001_Body',
                     "msg": msg,
                     "property": ".".join(map(str, loc[1:]))
                 }]
             })
     
     response = {
-        "code": 400,
-        "message": "Bad Body Request",
+        "code": 422,
+        "message": "Bad Request",
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "requestid": str(uuid.uuid4()),
         "errors": errors
     }
-    return JSONResponse(status_code=400, content=response)
+    return JSONResponse(status_code=422, content=response)
 
 app.include_router(pdf_generator_router)

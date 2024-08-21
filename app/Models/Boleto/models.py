@@ -24,7 +24,7 @@ class Address(BaseModel):
     complement: str
     email: str
     neighborhood: str
-    number: int
+    number: int | str
     phone: str
     postal_code: str
     state: str
@@ -52,11 +52,16 @@ class Fine(BaseModel):
 class Interest(BaseModel):
     modality: int
     value: float
+    
+class Rebate(BaseModel):
+    modality: int
+    value: float
 
 class AmountDetails(BaseModel):
     discount: Optional[Discount] = None
     fine: Optional[Fine] = None
     interest: Optional[Interest] = None
+    rebate: Optional[Rebate] = None
 
 class Calendar(BaseModel):
     due_date: str
@@ -70,7 +75,7 @@ class Billing(BaseModel):
     amount_details: Optional[AmountDetails] = None
     bank_slip_type: str
     billing_id: str
-    billing_provider_number: str
+    billing_provider_number: int | str
     calendar: Calendar
     total: float
     messages: Optional[List[str]] = None
@@ -96,7 +101,7 @@ class BankSlipConfig(BaseModel):
     send_email_to_buyers: Optional[bool] = None
 
 class ShipayCredential(BaseModel):
-    bank_account_id: str
+    bank_account_id: int
     shipay_client_id: str
 
 class BankAccount(BaseModel):
