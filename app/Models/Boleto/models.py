@@ -72,7 +72,7 @@ class Billing(BaseModel):
     billing_id: str
     billing_provider_number: str
     calendar: Calendar
-    total: str
+    total: float
     messages: Optional[List[str]] = None
 
 class PaymentInfo(BaseModel):
@@ -96,7 +96,7 @@ class BankSlipConfig(BaseModel):
     send_email_to_buyers: Optional[bool] = None
 
 class ShipayCredential(BaseModel):
-    bank_account_id: int
+    bank_account_id: str
     shipay_client_id: str
 
 class BankAccount(BaseModel):
