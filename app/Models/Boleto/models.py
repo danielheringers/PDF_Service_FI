@@ -1,24 +1,6 @@
 from __future__ import annotations
 from typing import List, Optional
 from pydantic import BaseModel
- 
-#-------------------------------------------------------------------------#
-#--------------------------Tipando em Python------------------------------#
-#-------------------------------------------------------------------------#
-# Padrões de Tipagem
-
-# Caso o campo seja obrigatorio
-# Campo: tipo
-
-# Caso o campo seja opcional use o modelo abaixo
-# Campo: Optional[List[Evento]]
-
-# Caso o tipo seja opcional e você queira definir um valor substituto utilize o modelo abaixo, o valor none pode ser qualquer outro valor.
-# Campo: Optional[List[Evento]] = none
-#-------------------------------------------------------------------------#
-#--------------------------        Fim      ------------------------------#
-#-------------------------------------------------------------------------#
-
 class Address(BaseModel):
     city: str
     complement: str
