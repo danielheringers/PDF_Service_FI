@@ -3,8 +3,8 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from datetime import datetime, timezone
 import uuid
-from app.Routes.pdf_generator import router as pdf_generator_router
-from app.Models.Errors.custom_exception import HeaderMissingException
+from app.api.router.routes import router
+from app.schemas.errors.custom_exception import HeaderMissingException
 
 app = FastAPI()
 
@@ -68,4 +68,4 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     }
     return JSONResponse(status_code=422, content=response)
 
-app.include_router(pdf_generator_router)
+app.include_router(router)
