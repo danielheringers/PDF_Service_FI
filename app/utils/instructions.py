@@ -1,18 +1,15 @@
 from datetime import datetime
 from reportlab.platypus import Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
-
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import mm
 from app.utils.general_pdf_utils import formatar_moeda
 
-def payment_instructions(canvas_draw, x, y, data):
-    styles = getSampleStyleSheet()
-    instruction_style = styles['Normal']
-    instruction_style.fontName = "Helvetica"
-    instruction_style.fontSize = 7
-    instruction_style.leading = 10
-
+def generate_instructions(data):
+    if not data:
+        return ""
+    
     instructions = []
-
     amount_details = data.billing.amount_details
     discount = amount_details.discount if amount_details else None
     fine = amount_details.fine if amount_details else None
@@ -54,14 +51,7 @@ def payment_instructions(canvas_draw, x, y, data):
 
     if days_after_due and days_after_due > 0:
         instructions.append(f"Não receber após {days_after_due} dias de vencimento.")
-    
+
     instructions.append("Em caso de dúvidas, entre em contato com o beneficiário.")
 
-    # Converta as instruções em parágrafos
-    instruction_paragraphs = [Paragraph(instr, instruction_style) for instr in instructions]
-
-    # Desenhe os parágrafos nas coordenadas especificadas
-    for paragraph in instruction_paragraphs:
-        w, h = paragraph.wrap(0, 0)  # Calcular a largura e altura do parágrafo
-        paragraph.drawOn(canvas_draw, x, y)  # Desenha o parágrafo no canvas
-        y -= h + 5  # Mova o y para baixo para o próximo parágrafo
+    return instructions

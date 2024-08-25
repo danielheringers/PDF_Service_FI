@@ -1,13 +1,12 @@
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.lib.colors import black
-from reportlab.platypus import SimpleDocTemplate
+from reportlab.platypus import SimpleDocTemplate, Spacer
 from io import BytesIO
 from app.schemas.boleto.models import Boleto
-from app.services.boletosV2.boleto_service import CustomTable
-from reportlab.pdfgen import canvas
+from app.services.boletosV2.boleto_service import CustomMixedColumnTable, CustomTable, CustomTextTable
 from app.utils.general_pdf_utils import formatar_cnpj_cpf, formatar_moeda_sem_cifrao, logo_bank_names
-from app.utils.instructions import payment_instructions
+from app.utils.instructions import generate_instructions
 
 def create_pdf_teste(data: Boleto) -> BytesIO:
     buffer = BytesIO()
@@ -72,15 +71,8 @@ def create_pdf_teste(data: Boleto) -> BytesIO:
             {'title': '(=) Valor do Documento', 'text': f'{formatar_moeda_sem_cifrao(data.billing.total)}', 'text_align': 'right'},
         ],
     ]
-    instructions_data = [[{'title': instructions_text}]]
-    amount_details_data = [
-        [{'title': '(-) Desconto / Abatimento'}],
-        [{'title': '(-) Outras Deduções'}],
-        [{'title': '(+) Mora / Multa'}],
-        [{'title': '(+) Outros Acréscimos'}],
-        [{'title': '(=) Valor Cobrado'}]
-    ]
 
+    instructions_data = generate_instructions(data)
     main_table_col_widths = [
                     [50 * mm, 30 * mm, 115 * mm],
                     [150 * mm, 45 * mm],
@@ -89,19 +81,62 @@ def create_pdf_teste(data: Boleto) -> BytesIO:
                     [25 * mm, 15 * mm, 20 * mm, 25 * mm, 30 * mm, 35 * mm, 45 * mm]
                 ]
     main_table_row_heights = [15 * mm, 10 * mm, 10 * mm, 10 * mm, 10 * mm]
-    
-    instructions_col_width = [[150 * mm]]
-    instructions_row_heights = [50 * mm]
-    
-    amount_details_widths = [[45 * mm],[45 * mm],[45 * mm],[45 * mm],[45 * mm],]
-    amount_details_heights = [10 * mm, 10 * mm, 10 * mm, 10 * mm, 10 * mm]
 
     table = CustomTable(main_table_data, main_table_col_widths, main_table_row_heights, fillcolor=None, strokecolor=black)
-    instructions_table = CustomTable(instructions_data, instructions_col_width, instructions_row_heights,  fillcolor=None, strokecolor=black)
-    amount_details_table = CustomTable(amount_details_data, amount_details_widths, amount_details_heights, xoffset=151.78 * mm, yoffset=50*mm, fillcolor=None, strokecolor=black)
+
+    instructions_table = CustomTextTable(
+        title=instructions_text,
+        texts=instructions_data,
+        col_width=150 * mm,
+        row_height=30 * mm,  
+        text_line_height=4 * mm,
+        xoffset=5,
+        yoffset=10 * mm,
+        title_size=6,
+        title_align="left",
+        title_padding_x=1.5*mm,
+        title_padding_y=17.5*mm,
+        text_font="Helvetica",
+        text_size=6,
+        text_align="center",
+        text_padding_x=1.5*mm,
+        text_padding_y=15*mm
+    )    
+    spacer = Spacer(0, 20 * mm)
     
+    col1_texts = [f"Linha {i}" for i in range(1, 11)]
+    col2_data = ["Linha 1", "Linha 2", "Linha 3", "Linha 4", "Linha 5"]
+
+    col1_width = 150 * mm
+    col1_height = 50 * mm
+    col2_widths = [45 * mm] * 5
+    col2_heights = [10 * mm] * 5
+
+    table2 = CustomMixedColumnTable(
+        col1_title=instructions_text, 
+        col1_texts=col1_texts, 
+        col2_data=col2_data, 
+        col1_width=col1_width, 
+        col1_height=col1_height, 
+        col2_widths=col2_widths, 
+        col2_heights=col2_heights, 
+        xoffset=5, 
+        yoffset=0,
+        title_font="Helvetica-Bold", 
+        title_size=6, 
+        text_font="Helvetica", 
+        text_size=7, 
+        text_line_spacing=3.7*mm
+    )
+
+
+    # Criação do documento
     doc = SimpleDocTemplate(buffer, pagesize=A4, leftMargin=5 * mm, rightMargin=5 * mm, topMargin=5 * mm, bottomMargin=5 * mm)
-    elements = [table, instructions_table, amount_details_table]
+    elements = [
+        table, instructions_table, 
+        spacer,
+        table2
+    ]
     doc.build(elements)
 
     buffer.seek(0)
