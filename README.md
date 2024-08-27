@@ -29,7 +29,7 @@ Este projeto é estruturado para fornecer uma arquitetura limpa, escalável e or
 
 ### `utils/`
 - Contém funções utilitárias que podem ser usadas em várias partes do projeto, como:
-  - `pdf_generator.py`: Geradores de PDFs.
+  - `general_pdf_utils.py`: Funções Auxiliares.
   - Funções auxiliares e outras ferramentas utilitárias.
 
 ### `tests/`
