@@ -6,6 +6,8 @@ from reportlab.lib.utils import ImageReader
 from PIL import Image
 from datetime import datetime
 
+from app.schemas.boleto.models import Boleto
+
 
 def formatar_cnpj_cpf(numero):
     numero_str = re.sub(r'\D', '', str(numero))
@@ -15,7 +17,6 @@ def formatar_cnpj_cpf(numero):
         return f'{numero_str[:3]}.{numero_str[3:6]}.{numero_str[6:9]}-{numero_str[9:]}'
     else:
         return numero
-    
 def escrever_mensagens(canvas_draw, start_y, decrement_mm, messages, margin):
     startYPosition = start_y * mm
     decrement = decrement_mm * mm 
@@ -26,7 +27,6 @@ def escrever_mensagens(canvas_draw, start_y, decrement_mm, messages, margin):
             break
         y_pos = startYPosition - i * decrement
         canvas_draw.drawString(margin + 2 * mm, y_pos, message)
-
 def escrever_texto(canvas, texts, margin, width):
 
     for text, x, y, font_size, bold, string_width in texts:
@@ -66,7 +66,7 @@ def quebrar_linhas(text, max_width, canvas_draw, font_name, font_size):
     lines.append(current_line.strip())
     return lines
 
-def instrucoes_de_pagamento(canvas_draw, start_y, decrement_mm, data, margin):
+def instrucoes_de_pagamento(canvas_draw, start_y, decrement_mm, data: Boleto, margin):
     instructions = []
     
     amount_details = data.billing.amount_details
@@ -78,19 +78,20 @@ def instrucoes_de_pagamento(canvas_draw, start_y, decrement_mm, data, margin):
     days_after_due = bank_slip_config.days_valid_after_due if bank_slip_config else None
     calendar = data.billing.calendar
     expiration_date = calendar.expiration_date
+
     if not discount and not fine and not interest and not rebate:
         instructions = [ 
             "Em caso de dúvidas, entre em contato com o beneficiário"
         ]
     else:
-        if fine and fine.value > 0:
+        if "value" in fine and fine.value > 0:
             modality = fine.modality
             if modality == 1:
                 instructions.append(f"Multa de {formatar_para_real(fine.value)} após data de vencimento")
             elif modality == 2:
                 instructions.append(f"Multa de {fine.value}% após data de vencimento")
         
-        if interest and interest.value > 0:
+        if "value" in interest and interest.value > 0:
             modality = interest.modality
             if modality == 1:
                 instructions.append(f"Juros de {formatar_para_real(interest.value)} por dia corrido após o vencimento")
@@ -109,15 +110,15 @@ def instrucoes_de_pagamento(canvas_draw, start_y, decrement_mm, data, margin):
             elif modality == 8:
                 instructions.append(f"Juros de {interest.value}% ao ano após o vencimento")
 
-        if discount and discount.modality:
+        if "modality" in discount:
             modality = discount.modality
-            data_desconto = discount.fixed_date[0].date if discount.fixed_date else None
+            data_desconto = discount.get('fixed_date', [{}])[0].get('date', None)
             if data_desconto:
                 data_desconto_formatada = datetime.strptime(data_desconto, "%Y-%m-%d").strftime("%d/%m/%Y")
             else:
                 data_desconto_formatada = "N/A"
             if modality == 1:
-                instructions.append(f"Desconto de {formatar_para_real(discount.fixed_date[0].value)} até {data_desconto_formatada}")
+                instructions.append(f"Desconto de {formatar_para_real(discount['fixed_date'][0].value)} até {data_desconto_formatada}")
             elif modality == 2:
                 instructions.append(f"Desconto de {discount.value}% até {data_desconto_formatada}.")
             elif modality == 3:
@@ -129,14 +130,14 @@ def instrucoes_de_pagamento(canvas_draw, start_y, decrement_mm, data, margin):
             elif modality == 6:
                 instructions.append(f"Desconto de {discount.value}% por dia útil para pagamento antecipado até o vencimento")
 
-        if rebate and rebate.value > 0:
+        if "value" in rebate and rebate.value > 0:
             modality = rebate.modality
             if modality == 1:
                 instructions.append(f"Abatimento de {formatar_para_real(rebate.value)} no valor da cobrança.")
             elif modality == 2:
                 instructions.append(f"Abatimento de {rebate.value}% no valor da cobrança")
 
-        if days_after_due and days_after_due > 0:
+        if days_after_due is not None and days_after_due > 0:
             instructions.append(f"Não receber após {days_after_due} dias de vencimento.")
 
         instructions.append("Em caso de dúvidas, entre em contato com o beneficiário")
@@ -155,12 +156,14 @@ def instrucoes_de_pagamento(canvas_draw, start_y, decrement_mm, data, margin):
             break
 
         wrapped_lines = quebrar_linhas(instruction, max_text_width, canvas_draw, font_name, font_size)
+        print(wrapped_lines)
         for line in wrapped_lines:
             if line_count >= 10:
                 break
             y_pos = startYPosition - line_count * decrement
             canvas_draw.drawString(margin + 2 * mm, y_pos, line)
             line_count += 1
+
 
 
 # Logo No QR CODE NÃO UTILIZAR AINDA VAMOS DEFINIR NO FUTURO

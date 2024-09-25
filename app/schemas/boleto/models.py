@@ -4,7 +4,6 @@ from pydantic import BaseModel
 class Address(BaseModel):
     city: str
     complement: str
-    email: str
     neighborhood: str
     number: int | str
     phone: str
@@ -59,7 +58,7 @@ class Billing(BaseModel):
     billing_id: str
     billing_provider_number: int | str
     calendar: Calendar
-    total: float
+    total: str | float
     messages: Optional[List[str]] = None
 
 class PaymentInfo(BaseModel):
@@ -82,10 +81,6 @@ class BankSlipConfig(BaseModel):
     bank_account_id: int
     send_email_to_buyers: Optional[bool] = None
 
-class ShipayCredential(BaseModel):
-    bank_account_id: int
-    shipay_client_id: str
-
 class BankAccount(BaseModel):
     id: int
     external_id: str
@@ -107,7 +102,6 @@ class BankAccount(BaseModel):
     updated_at: str
     client_accounts: List[ClientAccount]
     bank_slip_config: Optional[BankSlipConfig] = None
-    shipay_credential: ShipayCredential
 
 class Boleto(BaseModel):
     billing: Billing

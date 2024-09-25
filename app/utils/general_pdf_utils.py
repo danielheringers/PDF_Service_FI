@@ -1,82 +1,10 @@
-import locale
-import re
-from datetime import datetime
+import re 
 from reportlab.lib.units import mm
-from reportlab.platypus import Image
-from typing import Optional
-from app.schemas.boleto.models import Boleto
-from app.schemas.danfe.models import Danfe
-
-def draw_messages(canvas, start_y, decrement_mm, messages, margin):
-    start_y_position = start_y * mm
-    decrement = decrement_mm * mm
-    canvas.setFont("Times-Roman", 7)
-    for i, message in enumerate(messages[:7]):
-        y_pos = start_y_position - i * decrement
-        canvas.drawString(margin + 2 * mm, y_pos, message)
-
-def formatar_moeda_sem_cifrao(valor):
-    try:
-        valor_float = float(valor)
-        valor_formatado = locale.currency(valor_float, grouping=True).replace('R$', '').strip()
-        return valor_formatado
-    except ValueError:
-        return valor
-    
-def formatar_moeda(valor):
-    try:
-        valor_float = float(valor)
-        valor_formatado = locale.currency(valor_float, grouping=True)
-        return valor_formatado
-    except ValueError:
-        return valor
-
-def draw_wrapped_text(canvas, text, x, y, max_width, line_height):
-    canvas.setFont("Times-Roman", 7)
-    
-    words = text.split()
-    lines = []
-    current_line = []
-    current_width = 0
-
-    for word in words:
-        word_width = canvas.stringWidth(word + ' ', "Times-Roman", 7)
-        if current_width + word_width <= max_width:
-            current_line.append(word)
-            current_width += word_width
-        else:
-            lines.append(' '.join(current_line))
-            current_line = [word]
-            current_width = word_width
-
-    lines.append(' '.join(current_line))
-    for line in lines:
-        canvas.drawString(x, y, line)
-        y -= line_height
-
-def formatar_celular(numero):
-    numero = re.sub(r'\D', '', numero)
-    if len(numero) == 11:
-        return f"({numero[:2]}) {numero[2:7]}-{numero[7:]}"
-    elif len(numero) == 10:
-        return f"({numero[:2]}) {numero[2:6]}-{numero[6:]}"
-    else:
-        return "Número inválido"
-
-def formatar_chave_acesso(chave):
-    return ' '.join(chave[i:i+4] for i in range(0, len(chave), 4))
-
-
-def get_emissao_details(dados: Danfe) -> Optional[str]:
-    for evento in dados.eventos:
-        if evento.type == "EMISSÃO":
-            protocolo = evento.protocolo
-            dh_evento = evento.dhEvento
-            if protocolo and dh_evento:
-                dt = datetime.fromisoformat(dh_evento)
-                dh_evento_formatado = dt.strftime("%d/%m/%Y %H:%M:%S")
-                return f'{protocolo} - {dh_evento_formatado}'
-    return None
+from io import BytesIO
+import qrcode
+from reportlab.lib.utils import ImageReader
+from PIL import Image
+from datetime import datetime
 
 
 def formatar_cnpj_cpf(numero):
@@ -87,49 +15,180 @@ def formatar_cnpj_cpf(numero):
         return f'{numero_str[:3]}.{numero_str[3:6]}.{numero_str[6:9]}-{numero_str[9:]}'
     else:
         return numero
+    
+def escrever_mensagens(canvas_draw, start_y, decrement_mm, messages, margin):
+    startYPosition = start_y * mm
+    decrement = decrement_mm * mm 
+    canvas_draw.setFont("Helvetica", 7)
 
+    for i, message in enumerate(messages):
+        if i >= 14:
+            break
+        y_pos = startYPosition - i * decrement
+        canvas_draw.drawString(margin + 2 * mm, y_pos, message)
 
-def logo_bank_names(bank: Boleto):
-    bank_names = {
-        "001": "Banco do Brasil",
-        "004": "Banco do Nordeste",
-        "033": "Banco Santander",
-        "104": "Caixa Econômica Federal",
-        "237": "Banco Bradesco",
-        "341": "Banco Itaú S.A",
-        "380": "PicPay",
-        "756": "Sicoob",
-    }
+def escrever_texto(canvas, texts, margin, width):
 
-    bank_settings = {
-        "001": {"x": 2 * mm, "y": 2.5 * mm, "return_name": True, "height": 10},
-        "004": {"x": 10 * mm, "y": 2 * mm, "return_name": False, "height": 10},
-        "033": {"x": 2 * mm, "y": 3 * mm, "return_name": False, "height": 9},
-        "104": {"x": 4.5 * mm, "y": 2.5 * mm, "return_name": False, "height": 9},
-        "237": {"x": 5.5 * mm, "y": 2 * mm, "return_name": False, "height": 10},
-        "341": {"x": 1.5 * mm, "y": 2 * mm, "return_name": True, "height": 10},
-        "380": {"x": 11 * mm, "y": 2.5 * mm, "return_name": False, "height": 10},
-        "756": {"x": 5 * mm, "y": 1.5 * mm, "return_name": False, "height": 10},
-    }
+    for text, x, y, font_size, bold, string_width in texts:
+        font_name = "Helvetica-Bold" if bold else "Helvetica"
+        canvas.setFont(font_name, font_size)
+        if isinstance(x, str):
+            if 'right' in x:
+                offset = float(x.split('-')[1].strip()) * mm
+                x_pos = width - margin - offset
+            else:
+                offset = float(x.split('+')[1].strip()) * mm
+                x_pos = margin + offset
+        else:
+            x_pos = x * mm
+        if string_width:
+            y_pos = y * mm
+            canvas.drawRightString(x_pos, y_pos, str(text))
+        else:
+            y_pos = y * mm
+            canvas.drawString(x_pos, y_pos, str(text))
 
-    bank_code = bank.bank_account.bank
-    bank_code_digit = bank.bank_code
-    bank_name = bank_names.get(bank_code, "Unknown Bank")
-    image_path = f"app/services/boletosV2/bancos/logos/{bank_code}.png"
+def formatar_para_real(valor):
+    return f"R$ {valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
-    bank_setting = bank_settings.get(bank_code, {"x": 0, "y": 0, "return_name": True, "height": 0})
-    x_position = bank_setting["x"]
-    y_position = bank_setting["y"]
-    should_return_name = bank_setting["return_name"]
-    image_height = bank_setting["height"] * mm
+def quebrar_linhas(text, max_width, canvas_draw, font_name, font_size):
+    words = text.split()
+    lines = []
+    current_line = ""
 
-    img = Image(image_path)
-    aspect = img.imageWidth / float(img.imageHeight)
-    image_width = image_height * aspect
-    img.drawHeight = image_height
-    img.drawWidth = image_width
+    for word in words:
+        test_line = current_line + word + " "
+        if canvas_draw.stringWidth(test_line, font_name, font_size) <= max_width:
+            current_line = test_line
+        else:
+            lines.append(current_line.strip())
+            current_line = word + " "
+    lines.append(current_line.strip())
+    return lines
 
-    if should_return_name:
-        return img, bank_name, bank_code_digit, x_position, y_position
+def instrucoes_de_pagamento(canvas_draw, start_y, decrement_mm, data, margin):
+    instructions = []
+    
+    amount_details = data.billing.amount_details
+    discount = amount_details.discount if amount_details else None
+    fine = amount_details.fine if amount_details else None
+    interest = amount_details.interest if amount_details else None
+    rebate = amount_details.rebate if amount_details else None
+    bank_slip_config = data.bank_account.bank_slip_config 
+    days_after_due = bank_slip_config.days_valid_after_due if bank_slip_config else None
+    calendar = data.billing.calendar
+    expiration_date = calendar.expiration_date
+    if not discount and not fine and not interest and not rebate:
+        instructions = [ 
+            "Em caso de dúvidas, entre em contato com o beneficiário"
+        ]
     else:
-        return img, "", bank_code_digit, x_position, y_position
+        if fine and fine.value > 0:
+            modality = fine.modality
+            if modality == 1:
+                instructions.append(f"Multa de {formatar_para_real(fine.value)} após data de vencimento")
+            elif modality == 2:
+                instructions.append(f"Multa de {fine.value}% após data de vencimento")
+        
+        if interest and interest.value > 0:
+            modality = interest.modality
+            if modality == 1:
+                instructions.append(f"Juros de {formatar_para_real(interest.value)} por dia corrido após o vencimento")
+            elif modality == 2:
+                instructions.append(f"Juros de {interest.value}% ao dia corrido após o vencimento")
+            elif modality == 3:
+                instructions.append(f"Juros de {interest.value}% ao mês após o vencimento")
+            elif modality == 4:
+                instructions.append(f"Juros de {interest.value}% ao ano após o vencimento")
+            elif modality == 5:
+                instructions.append(f"Juros de {formatar_para_real(interest.value)} por dia útil após o vencimento")
+            elif modality == 6:
+                instructions.append(f"Juros de {interest.value}% por dia útil após o vencimento")
+            elif modality == 7:
+                instructions.append(f"Juros de {interest.value}% ao mês após o vencimento")
+            elif modality == 8:
+                instructions.append(f"Juros de {interest.value}% ao ano após o vencimento")
+
+        if discount and discount.modality:
+            modality = discount.modality
+            data_desconto = discount.fixed_date[0].date if discount.fixed_date else None
+            if data_desconto:
+                data_desconto_formatada = datetime.strptime(data_desconto, "%Y-%m-%d").strftime("%d/%m/%Y")
+            else:
+                data_desconto_formatada = "N/A"
+            if modality == 1:
+                instructions.append(f"Desconto de {formatar_para_real(discount.fixed_date[0].value)} até {data_desconto_formatada}")
+            elif modality == 2:
+                instructions.append(f"Desconto de {discount.value}% até {data_desconto_formatada}.")
+            elif modality == 3:
+                instructions.append(f"Desconto de {formatar_para_real(discount.value)} por dia corrido para pagamento antecipado até o vencimento")
+            elif modality == 4:
+                instructions.append(f"Desconto de {formatar_para_real(discount.value)} por dia útil para pagamento antecipado até o vencimento")
+            elif modality == 5:
+                instructions.append(f"Desconto de {discount.value}% por dia corrido para pagamento antecipado até o vencimento")
+            elif modality == 6:
+                instructions.append(f"Desconto de {discount.value}% por dia útil para pagamento antecipado até o vencimento")
+
+        if rebate and rebate.value > 0:
+            modality = rebate.modality
+            if modality == 1:
+                instructions.append(f"Abatimento de {formatar_para_real(rebate.value)} no valor da cobrança.")
+            elif modality == 2:
+                instructions.append(f"Abatimento de {rebate.value}% no valor da cobrança")
+
+        if days_after_due and days_after_due > 0:
+            instructions.append(f"Não receber após {days_after_due} dias de vencimento.")
+
+        instructions.append("Em caso de dúvidas, entre em contato com o beneficiário")
+
+    startYPosition = start_y * mm
+    decrement = decrement_mm * mm
+    max_text_width = 100 * mm
+    font_name = "Helvetica"
+    font_size = 7
+
+    canvas_draw.setFont(font_name, font_size)
+
+    line_count = 0
+    for instruction in instructions:
+        if line_count >= 10:
+            break
+
+        wrapped_lines = quebrar_linhas(instruction, max_text_width, canvas_draw, font_name, font_size)
+        for line in wrapped_lines:
+            if line_count >= 10:
+                break
+            y_pos = startYPosition - line_count * decrement
+            canvas_draw.drawString(margin + 2 * mm, y_pos, line)
+            line_count += 1
+
+
+# Logo No QR CODE NÃO UTILIZAR AINDA VAMOS DEFINIR NO FUTURO
+def create_qr_with_logo(qr_data, logo_path):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_H,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(qr_data)
+    qr.make(fit=True)
+    qr_img = qr.make_image(fill_color="black", back_color="white").convert('RGB')
+
+    # Salvar logo na variavel
+    logo = Image.open(logo_path)
+
+    # Calcular Tamanho da logo
+    qr_width, qr_height = qr_img.size
+    logo_size = int(qr_width / 4)
+    logo = logo.resize((logo_size, logo_size))
+    logo_pos = ((qr_width - logo_size) // 2, (qr_height - logo_size) // 2)
+
+    # Colar Logo No Qr Code
+    qr_img.paste(logo, logo_pos, mask=logo)
+
+    # Salvar QR Code no buffer
+    buffer = BytesIO()
+    qr_img.save(buffer, format="PNG")
+    buffer.seek(0)
+    return ImageReader(buffer)        
