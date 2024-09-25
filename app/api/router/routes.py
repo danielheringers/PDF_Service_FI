@@ -7,7 +7,7 @@ from app.core.security import verify_headers
 
 router = APIRouter()
 
-@router.post("/gerar/pdf/boleto")
+@router.post("/pdf/boleto")
 async def create_bankslip_pdf_endpoint(
     data: List[Boleto] = Body(...), 
     headers: dict = Depends(verify_headers)
